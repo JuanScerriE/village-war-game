@@ -1,6 +1,6 @@
 package player;
 
-import player.Player;
+import village.Village;
 
 public class HumanPlayer extends Player {
 
@@ -9,7 +9,7 @@ public class HumanPlayer extends Player {
     }
 
     @Override
-    public void actions() {
+    public void actions(Village village) {
 
     }
 }

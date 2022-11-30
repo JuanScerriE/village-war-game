@@ -1,11 +1,14 @@
 package player;
 
+import village.Village;
+
 public abstract class Player {
     private String _name;
     public Player(String name) {
         _name = name;
     }
-    public void actions() {
-
+    public String getName() {
+        return _name;
     }
+    public abstract void actions(Village village);
 }

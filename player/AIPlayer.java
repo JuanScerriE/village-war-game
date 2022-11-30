@@ -1,6 +1,6 @@
 package player;
 
-import player.Player;
+import village.Village;
 
 public class AIPlayer extends Player {
 
@@ -9,7 +9,7 @@ public class AIPlayer extends Player {
     }
 
     @Override
-    public void actions() {
+    public void actions(Village village) {
 
     }
 }
