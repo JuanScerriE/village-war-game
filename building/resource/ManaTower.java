@@ -43,4 +43,9 @@ public class ManaTower extends ResourceBuilding {
     public ResourceCollection generateResources() {
         return new ResourceCollection.Builder().setMana(_level * 4).build();
     }
+
+    @Override
+    public String toString() {
+        return "Mana Tower, Level " + _level;
+    }
 }

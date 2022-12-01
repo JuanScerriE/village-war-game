@@ -3,6 +3,7 @@ package building.troop;
 import building.Building;
 import building.TroopBuilding;
 import resources.ResourceCollection;
+import troop.TroopCollection;
 import troop.types.Wizard;
 
 import java.util.LinkedList;
@@ -50,8 +51,8 @@ public class Academy extends TroopBuilding<Wizard> {
     }
 
     @Override
-    public List<Wizard> generateTroops() {
-        List<Wizard> wizards = new LinkedList<>();
+    public TroopCollection generateTroops() {
+        TroopCollection wizards = new TroopCollection();
 
         for (int i = 1; i <= _level; i++) {
             if (Math.random() > 0.5) {
@@ -73,5 +74,10 @@ public class Academy extends TroopBuilding<Wizard> {
                 break;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Academy, Level " + _level;
     }
 }

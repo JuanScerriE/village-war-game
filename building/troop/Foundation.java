@@ -2,6 +2,8 @@ package building.troop;
 
 import building.TroopBuilding;
 import building.Building;
+import troop.Troop;
+import troop.TroopCollection;
 import troop.types.Scout;
 import resources.ResourceCollection;
 
@@ -51,8 +53,8 @@ public class Foundation extends TroopBuilding<Scout> {
     }
 
     @Override
-    public List<Scout> generateTroops() {
-        List<Scout> scouts = new LinkedList<>();
+    public TroopCollection generateTroops() {
+        TroopCollection scouts = new TroopCollection();
 
         for (int i = 1; i <= _level; i++) {
             if (Math.random() > 0.5) {
@@ -74,5 +76,10 @@ public class Foundation extends TroopBuilding<Scout> {
                 break;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Foundation, Level " + _level;
     }
 }

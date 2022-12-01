@@ -43,4 +43,9 @@ public class Farm extends ResourceBuilding {
     public ResourceCollection generateResources() {
         return new ResourceCollection.Builder().setFood(_level * 5).build();
     }
+
+    @Override
+    public String toString() {
+        return "Farm, Level " + _level;
+    }
 }

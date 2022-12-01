@@ -2,11 +2,11 @@ package building.troop;
 
 import building.TroopBuilding;
 import building.Building;
+import troop.TroopCollection;
 import troop.types.Brawler;
 import resources.ResourceCollection;
 
 // Standard Library
-import java.util.LinkedList;
 import java.util.List;
 
 public class Arena extends TroopBuilding<Brawler> {
@@ -51,8 +51,8 @@ public class Arena extends TroopBuilding<Brawler> {
     }
 
     @Override
-    public List<Brawler> generateTroops() {
-        List<Brawler> brawlers = new LinkedList<>();
+    public TroopCollection generateTroops() {
+        TroopCollection brawlers = new TroopCollection();
 
         for (int i = 1; i <= _level; i++) {
             if (Math.random() > 0.5) {
@@ -74,5 +74,10 @@ public class Arena extends TroopBuilding<Brawler> {
                 break;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Arena, Level " + _level;
     }
 }

@@ -76,6 +76,10 @@ public class Game {
         // calculate map dimensions
         Dimensions dimensions = calcMapDimensions(numOfHumanPlayers + numOfAIPlayers);
 
+        _map
+                .setDimensions(dimensions)
+                .setArmies(new LinkedList<>());
+
         // create players and villages
         List<Village> villages = new LinkedList<>();
 
@@ -87,10 +91,6 @@ public class Game {
             villages.add(new Village(new AIPlayer(String.format("AI %d", i + 1))));
         }
 
-        _map
-                .setDimensions(dimensions)
-                .setVillages(villages)
-                .setArmies(new LinkedList<>());
 
         // prep for location calculations
         int villageRadius = 20;
@@ -127,6 +127,8 @@ public class Game {
                     .setLocation(location);
 
         }
+
+        _map.setVillages(villages);
     }
 
     private Dimensions calcMapDimensions(int numOfPlayers) {

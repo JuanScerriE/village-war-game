@@ -8,6 +8,6 @@ import resources.ResourceCollection;
 import java.util.List;
 
 public abstract class TroopBuilding<T extends Troop> extends Building {
-    public abstract List<T> generateTroops();
+    public abstract TroopCollection generateTroops();
     public abstract void trainTroops(List<T> troops, ResourceCollection villageResources);
 }

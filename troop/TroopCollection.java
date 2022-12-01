@@ -13,18 +13,23 @@ public class TroopCollection {
     private final List<Brawler> _brawlers = new LinkedList<>();
     private final List<Scout> _scouts = new LinkedList<>();
 
-    public TroopCollection addAll(List<Wizard> wizards) {
-        _wizards.addAll(wizards);
+    public TroopCollection add(Wizard wizard) {
+        _wizards.add(wizard);
+        return this;
+    }
+    public TroopCollection add(Brawler brawler) {
+        _brawlers.add(brawler);
+        return this;
+    }
+    public TroopCollection add(Scout scout) {
+        _scouts.add(scout);
         return this;
     }
 
-    public TroopCollection addAll(List<Brawler> brawlers) {
-        _brawlers.addAll(brawlers);
-        return this;
-    }
-
-    public TroopCollection addAll(List<Scout> scouts) {
-        _scouts.addAll(scouts);
+    public TroopCollection add(TroopCollection troops) {
+        _wizards.addAll(troops._wizards);
+        _brawlers.addAll(troops._brawlers);
+        _scouts.addAll(troops._scouts);
         return this;
     }
 
@@ -167,5 +172,11 @@ public class TroopCollection {
         }
 
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Total Attack Power: " + getTotalAttackPower() + "\nTotal Carrying Capacity: "
+                + getTotalCarryingCapacity() + "\nSlowest Movement Speed: " + getSlowestMovementSpeed();
     }
 }

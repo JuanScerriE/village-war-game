@@ -93,6 +93,11 @@ public class ResourceCollection {
         return builder.build();
     }
 
+    @Override
+    public String toString() {
+        return "Food: " + _food + "\nMetal: " + _metal + "\nMana: " + _mana;
+    }
+
     public static class Builder {
         private int _food = 0;
         private int _metal = 0;

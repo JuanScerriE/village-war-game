@@ -43,4 +43,9 @@ public class Mine extends ResourceBuilding {
     public ResourceCollection generateResources() {
         return new ResourceCollection.Builder().setMetal(_level * 6).build();
     }
+
+    @Override
+    public String toString() {
+        return "Mine, Level " + _level;
+    }
 }

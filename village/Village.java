@@ -1,6 +1,5 @@
 package village;
 
-import building.Building;
 import building.ResourceBuilding;
 import building.TroopBuilding;
 import map.Map;
@@ -120,10 +119,35 @@ public class Village {
         for (var building : _resourceBuildings) {
             _resources.add(building.generateResources());
         }
+
         for (var building : _troopBuildings) {
-            _troops.addAll(building.generateTroops());
+            _troops.add(building.generateTroops());
         }
+
         return this;
+    }
+
+    public void PrintVillageStats() {
+        System.out.println("Health: " + _health);
+        System.out.println(_resources);
+    }
+
+    public void PrintStationedTroopsStats() {
+        System.out.println(_troops);
+    }
+
+    public void PrintBuildingStats() {
+        System.out.println("Resource Buildings:");
+
+        for (var building : _resourceBuildings) {
+            System.out.println("-" + building);
+        }
+
+        System.out.println("Troop Buildings:");
+
+        for (var building : _troopBuildings) {
+            System.out.println("-" + building);
+        }
     }
 
     public Village playerActions() {
