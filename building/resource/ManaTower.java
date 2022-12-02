@@ -20,11 +20,6 @@ public class ManaTower extends ResourceBuilding {
     public static final int MaximumLevel = 4;
 
     @Override
-    public boolean hasEnoughToBuild(ResourceCollection villageResources) {
-        return villageResources.hasEnough(CostToBuild);
-    }
-
-    @Override
     public boolean hasEnoughToUpgrade(ResourceCollection villageResources) {
         return villageResources.hasEnough(CostToUpgrade);
     }

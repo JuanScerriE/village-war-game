@@ -20,11 +20,6 @@ public class Mine extends ResourceBuilding {
     public static final int MaximumLevel = 3;
 
     @Override
-    public boolean hasEnoughToBuild(ResourceCollection villageResources) {
-        return villageResources.hasEnough(CostToBuild);
-    }
-
-    @Override
     public boolean hasEnoughToUpgrade(ResourceCollection villageResources) {
         return villageResources.hasEnough(CostToUpgrade);
     }

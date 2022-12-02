@@ -23,55 +23,58 @@ public class Game {
     private void setup() {
         int numOfHumanPlayers = 0;
         int numOfAIPlayers = 0;
+        boolean repeat;
 
-        try (Scanner scanner = new Scanner(System.in)) {
-            boolean repeat;
+        Scanner scanner = new Scanner(System.in);
 
-            // get number of real players
-            do {
-                repeat = false;
+        // get number of real players
+        do {
+            repeat = false;
 
-                System.out.print("Enter the number of human players: ");
+            System.out.print("Enter the number of human players: ");
 
-                try {
-                    numOfHumanPlayers = Integer.parseInt(scanner.nextLine());
+            try {
+                numOfHumanPlayers = scanner.nextInt();
 
-                    if (numOfHumanPlayers < 1) {
+                if (numOfHumanPlayers < 1) {
+                    invalid("must be a greater than or equal to 1");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                invalid("must be a integer");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+        // get number of AI players
+        do {
+            repeat = false;
+
+            System.out.print("Enter the number of AI players: ");
+
+            try {
+                numOfAIPlayers = scanner.nextInt();
+
+                if (numOfHumanPlayers == 1) {
+                    if (numOfAIPlayers < 1) {
                         invalid("must be a greater than or equal to 1");
                         repeat = true;
                     }
-                } catch (Exception exception) {
-                    invalid("must be a integer");
-                    repeat = true;
-                }
-            } while (repeat);
-
-            // get number of AI players
-            do {
-                repeat = false;
-
-                System.out.print("Enter the number of AI players: ");
-
-                try {
-                    numOfAIPlayers = Integer.parseInt(scanner.nextLine());
-
-                    if (numOfHumanPlayers == 1) {
-                        if (numOfAIPlayers < 1) {
-                            invalid("must be a greater than or equal to 1");
-                            repeat = true;
-                        }
-                    } else {
-                        if (numOfAIPlayers < 0) {
-                            invalid("must be a greater than or equal to 0");
-                            repeat = true;
-                        }
+                } else {
+                    if (numOfAIPlayers < 0) {
+                        invalid("must be a greater than or equal to 0");
+                        repeat = true;
                     }
-                } catch (Exception exception) {
-                    invalid("must be an integer");
-                    repeat = true;
                 }
-            } while (repeat);
-        }
+
+                scanner.nextLine();
+            } catch (Exception exception) {
+                invalid("must be an integer");
+                repeat = true;
+            }
+        } while (repeat);
 
         // calculate map dimensions
         Dimensions dimensions = calcMapDimensions(numOfHumanPlayers + numOfAIPlayers);

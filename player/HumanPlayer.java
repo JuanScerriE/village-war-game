@@ -11,115 +11,287 @@ public class HumanPlayer extends Player {
         super(name);
     }
 
+    public void buildOption(Village village) {
+        int option = 0;
+
+        // TODO: Print the cost each building
+
+        Scanner scanner = new Scanner(System.in);
+
+        boolean repeat = false;
+
+        do {
+            repeat = false;
+
+            System.out.print(
+                     "1. Build Academy\n"
+                    +"2. Build Foundation\n"
+                    +"3. Build Arena\n"
+                    +"4. Build Farm\n"
+                    +"5. Build Mine\n"
+                    +"6. Build Mana Tower\n"
+                    +"> ");
+
+            try {
+                option = scanner.nextInt();
+
+                if (option < 1 || option > 6) {
+                    System.out.println("Invalid: input must be between 1 and 6 inclusive");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                System.out.println("Invalid: input must be a number");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+        switch (option) {
+            case 1:
+                if (!village.buildAcademy()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 2:
+                if (!village.buildFoundation()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 3:
+                if (!village.buildArena()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 4:
+                if (!village.buildFarm()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 5:
+                if (!village.buildMine()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 6:
+                if (!village.buildManaTower()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+        }
+    }
+
+    public void upgradeOption(Village village) {
+        int option = 0;
+
+        // TODO: Print the cost each building
+
+        Scanner scanner = new Scanner(System.in);
+
+        boolean repeat = false;
+
+        do {
+            repeat = false;
+
+            System.out.print(
+                "1. Upgrade Academy\n"
+                    +"2. Upgrade Foundation\n"
+                    +"3. Upgrade Arena\n"
+                    +"4. Upgrade Farm\n"
+                    +"5. Upgrade Mine\n"
+                    +"6. Upgrade Mana Tower\n"
+                    +"> ");
+
+            try {
+                option = scanner.nextInt();
+
+                if (option < 1 || option > 6) {
+                    System.out.println("Invalid: input must be between 1 and 6 inclusive");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                System.out.println("Invalid: input must be a number");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+        switch (option) {
+            case 1:
+                if (!village.upgradeAcademy()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 2:
+                if (!village.upgradeFoundation()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 3:
+                if (!village.upgradeArena()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 4:
+                if (!village.upgradeFarm()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 5:
+                if (!village.upgradeMine()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 6:
+                if (!village.upgradeManaTower()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+        }
+    }
+
+    public void trainOption(Village village) {
+        int option = 0;
+
+        // TODO: Print the cost each building
+
+        Scanner scanner = new Scanner(System.in);
+
+        boolean repeat = false;
+
+        do {
+            repeat = false;
+
+            System.out.print(
+                "1. Build Academy\n"
+                    +"2. Build Foundation\n"
+                    +"3. Build Arena\n"
+                    +"4. Build Farm\n"
+                    +"5. Build Mine\n"
+                    +"6. Build Mana Tower\n"
+                    +"> ");
+
+            try {
+                option = scanner.nextInt();
+
+                if (option < 1 || option > 6) {
+                    System.out.println("Invalid: input must be between 1 and 6 inclusive");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                System.out.println("Invalid: input must be a number");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+        switch (option) {
+            case 1:
+                if (!village.buildAcademy()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 2:
+                if (!village.buildFoundation()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 3:
+                if (!village.buildArena()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 4:
+                if (!village.buildFarm()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 5:
+                if (!village.buildMine()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+            case 6:
+                if (!village.buildManaTower()) {
+                    System.out.println("Not enough resources!");
+                }
+                break;
+        }
+    }
+
     @Override
     public void actions(Village village) {
         boolean nextPlayer = false;
         int option = 0;
 
-        try (Scanner scanner = new Scanner(System.in)) {
-            scanner.reset();
+        Scanner scanner = new Scanner(System.in);
 
-            while (!nextPlayer) {
-                boolean repeat = false;
+        while (!nextPlayer) {
+            boolean repeat = false;
 
-                do {
-                    repeat = false;
+            do {
+                repeat = false;
 
-                    System.out.print("Info:\n"
-                            + "1. Print village stats\n"
-                            + "2. Print stationed troops stats\n"
-                            + "3. Print building stats\n"
-                            + "Building/Training:\n"
-                            + "4. Build Farm\n"
-                            + "5. Upgrade Farm\n"
-                            + "6. Build Mine\n"
-                            + "7. Upgrade Mine\n"
-                            + "8. Build Mana Tower\n"
-                            + "9. Upgrade Mana Tower\n"
-                            + "10. Build Academy\n"
-                            + "11. Upgrade Academy\n"
-                            + "12. Build Arena\n"
-                            + "13. Upgrade Arena\n"
-                            + "14. Build Foundation\n"
-                            + "15. Upgrade Foundation\n"
-                            + "16. Train Wizards\n"
-                            + "17. Train Brawlers\n"
-                            + "18. Train Scouts\n"
-                            + "Attack Enemy Village:\n"
-                            + "19. Print enemy villages\n"
-                            + "20. Attack enemy village\n"
-                            + "Next player:\n"
-                            + "21. Next player\n"
-                            + "> "
-                    );
+                System.out.print(
+                          "Info:                             Building/Training:\n"
+                        + "1. Print village stats            4. Build\n"
+                        + "2. Print stationed troops stats   5. Upgrade\n"
+                        + "3. Print building stats           6. Train\n"
+                        + "Attack Enemy Village:             Next:\n"
+                        + "7. Print enemy villages           9. Next Player\n"
+                        + "8. Attack enemy village\n"
+                        + "> "
+                );
 
-                    try {
-                        option = Integer.parseInt(scanner.nextLine());
+                try {
+                    option = scanner.nextInt();
 
-                        if (option < 1 || option > 21) {
-                            System.out.println("Invalid: input must be between 1 and 21 inclusive");
-                            repeat = true;
-                        }
-                    } catch (Exception exception) {
-                        System.out.println("Invalid: input must be a number");
+                    if (option < 1 || option > 9) {
+                        System.out.println("Invalid: input must be between 1 and 9 inclusive");
                         repeat = true;
                     }
-                } while (repeat);
-
-                switch (option) {
-                    case 1:
-                        village.PrintVillageStats();
-                        break;
-                    case 2:
-                        village.PrintStationedTroopsStats();
-                        break;
-                    case 3:
-                        village.PrintBuildingStats();
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
-                        break;
-                    case 7:
-                        break;
-                    case 8:
-                        break;
-                    case 9:
-                        break;
-                    case 10:
-                        break;
-                    case 11:
-                        break;
-                    case 12:
-                        break;
-                    case 13:
-                        break;
-                    case 14:
-                        break;
-                    case 15:
-                        break;
-                    case 16:
-                        break;
-                    case 17:
-                        break;
-                    case 18:
-                        break;
-                    case 19:
-                        break;
-                    case 20:
-                        break;
-                    case 21:
-                        nextPlayer = true;
-                        break;
+                } catch (Exception exception) {
+                    System.out.println("Invalid: input must be a number");
+                    repeat = true;
                 }
 
-                // Train / build commands
+                scanner.nextLine();
+            } while (repeat);
 
-                // Attack commands
-
+            switch (option) {
+                case 1:
+                    village.PrintVillageStats();
+                    break;
+                case 2:
+                    village.PrintStationedTroopsStats();
+                    break;
+                case 3:
+                    village.PrintBuildingStats();
+                    break;
+                case 4:
+                    buildOption(village);
+                    break;
+                case 5:
+                    upgradeOption(village);
+                    break;
+                case 6:
+                    trainOption(village);
+                    break;
+                case 7:
+                    village.PrintEnemyVillages();
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    nextPlayer = true;
+                    break;
             }
+
+            // Train / build commands
+
+            // Attack commands
         }
     }
 }
