@@ -72,6 +72,11 @@ public class Academy extends TroopBuilding<Wizard> {
     }
 
     @Override
+    public boolean canBeUpgraded() {
+        return _level < MaximumLevel;
+    }
+
+    @Override
     public String toString() {
         return "Academy, Level " + _level;
     }

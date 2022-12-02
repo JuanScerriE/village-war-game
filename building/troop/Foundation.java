@@ -74,6 +74,11 @@ public class Foundation extends TroopBuilding<Scout> {
     }
 
     @Override
+    public boolean canBeUpgraded() {
+        return _level < MaximumLevel;
+    }
+
+    @Override
     public String toString() {
         return "Foundation, Level " + _level;
     }

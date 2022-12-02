@@ -40,6 +40,11 @@ public class Farm extends ResourceBuilding {
     }
 
     @Override
+    public boolean canBeUpgraded() {
+        return _level < MaximumLevel;
+    }
+
+    @Override
     public String toString() {
         return "Farm, Level " + _level;
     }

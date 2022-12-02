@@ -40,6 +40,11 @@ public class ManaTower extends ResourceBuilding {
     }
 
     @Override
+    public boolean canBeUpgraded() {
+        return _level < MaximumLevel;
+    }
+
+    @Override
     public String toString() {
         return "Mana Tower, Level " + _level;
     }

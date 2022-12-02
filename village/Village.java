@@ -15,6 +15,7 @@ import map.Point;
 import resources.ResourceCollection;
 import troop.Army;
 import troop.TroopCollection;
+import util.CategoryList;
 
 // Standard Library
 import java.util.LinkedList;
@@ -27,8 +28,8 @@ public class Village {
 
     private final List<Army> _armies = Map.getInstance().getArmies();
 
-    private final List<TroopBuilding> _troopBuildings = new LinkedList<>();
-    private final List<ResourceBuilding> _resourceBuildings = new LinkedList<>();
+    private final CategoryList<TroopBuilding> _troopBuildings = new CategoryList<>();
+    private final CategoryList<ResourceBuilding> _resourceBuildings = new CategoryList<>();
     private final TroopCollection _troops = new TroopCollection();
     private final ResourceCollection _resources = new ResourceCollection.Builder().setFood(50).setMana(50).setMetal(50).build();
     private int _health = 1000;
@@ -266,104 +267,140 @@ public class Village {
 //    }
 
     public boolean upgradeAcademy() {
-//        Academy academy = getBuilding();
-//
-//        if (academy == null) {
-//            System.out.println("No academy buildings");
-//            return false;
-//        }
-//
-//        if (!academy.hasEnoughToUpgrade(_resources)) {
-//            return false;
-//        }
-//
-//        academy.upgrade(_resources);
+        List<Academy> academies = _troopBuildings.getCategory(Academy.class);
 
-        return true;
+        if (academies == null || academies.isEmpty()) {
+            System.out.println("No academy buildings");
+            return false;
+        }
+
+        for (var academy : academies) {
+            if (academy.hasEnoughToUpgrade(_resources)) {
+                if (academy.canBeUpgraded()) {
+                    academy.upgrade(_resources);
+
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
     public boolean upgradeFoundation() {
-//        Foundation foundation = getBuilding();
-//
-//        if (foundation == null) {
-//            System.out.println("No foundation buildings");
-//            return false;
-//        }
-//
-//        if (!foundation.hasEnoughToUpgrade(_resources)) {
-//            return false;
-//        }
-//
-//        foundation.upgrade(_resources);
+        List<Foundation> foundations = _troopBuildings.getCategory(Foundation.class);
 
-        return true;
+        if (foundations == null || foundations.isEmpty()) {
+            System.out.println("No foundation buildings");
+            return false;
+        }
+
+        for (var foundation : foundations) {
+            if (foundation.hasEnoughToUpgrade(_resources)) {
+                if (foundation.canBeUpgraded()) {
+                    foundation.upgrade(_resources);
+
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public boolean upgradeArena() {
-//        Arena arena = getBuilding();
-//
-//        if (arena == null) {
-//            System.out.println("No arena buildings");
-//            return false;
-//        }
-//
-//        if (!arena.hasEnoughToUpgrade(_resources)) {
-//            return false;
-//        }
-//
-//        arena.upgrade(_resources);
+        List<Arena> arenas = _troopBuildings.getCategory(Arena.class);
 
-        return true;
+        if (arenas == null || arenas.isEmpty()) {
+            System.out.println("No arena buildings");
+            return false;
+        }
+
+        for (var arena : arenas) {
+            if (arena.hasEnoughToUpgrade(_resources)) {
+                if (arena.canBeUpgraded()) {
+                    arena.upgrade(_resources);
+
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public boolean upgradeFarm() {
-//        Farm farm = getBuilding();
-//
-//        if (farm == null) {
-//            System.out.println("No farm buildings");
-//            return false;
-//        }
-//
-//        if (!farm.hasEnoughToUpgrade(_resources)) {
-//            return false;
-//        }
-//
-//        farm.upgrade(_resources);
+        List<Farm> farms = _resourceBuildings.getCategory(Farm.class);
 
-        return true;
+        if (farms == null || farms.isEmpty()) {
+            System.out.println("No farm buildings");
+            return false;
+        }
+
+        for (var farm : farms) {
+            if (farm.hasEnoughToUpgrade(_resources)) {
+                if (farm.canBeUpgraded()) {
+                    farm.upgrade(_resources);
+
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public boolean upgradeMine() {
-//        Mine mine = getBuilding();
-//
-//        if (mine == null) {
-//            System.out.println("No mine buildings");
-//            return false;
-//        }
-//
-//        if (!mine.hasEnoughToUpgrade(_resources)) {
-//            return false;
-//        }
-//
-//        mine.upgrade(_resources);
+        List<Mine> mines = _resourceBuildings.getCategory(Mine.class);
 
-        return true;
+        if (mines == null || mines.isEmpty()) {
+            System.out.println("No mine buildings");
+            return false;
+        }
+
+        for (var mine : mines) {
+            if (mine.hasEnoughToUpgrade(_resources)) {
+                if (mine.canBeUpgraded()) {
+                    mine.upgrade(_resources);
+
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public boolean upgradeManaTower() {
-//        ManaTower manaTower = getBuilding();
-//
-//        if (manaTower == null) {
-//            System.out.println("No mana tower buildings");
-//            return false;
-//        }
-//
-//        if (!manaTower.hasEnoughToUpgrade(_resources)) {
-//            return false;
-//        }
-//
-//        manaTower.upgrade(_resources);
-//
-        return true;
+        List<ManaTower> manaTowers = _resourceBuildings.getCategory(ManaTower.class);
+
+        if (manaTowers == null || manaTowers.isEmpty()) {
+            System.out.println("No mana tower buildings");
+            return false;
+        }
+
+        for (var manaTower : manaTowers) {
+            if (manaTower.hasEnoughToUpgrade(_resources)) {
+                if (manaTower.canBeUpgraded()) {
+                    manaTower.upgrade(_resources);
+
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public Village playerActions() {

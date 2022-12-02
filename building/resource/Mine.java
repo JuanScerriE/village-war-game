@@ -35,6 +35,11 @@ public class Mine extends ResourceBuilding {
     }
 
     @Override
+    public boolean canBeUpgraded() {
+        return _level < MaximumLevel;
+    }
+
+    @Override
     public ResourceCollection generateResources() {
         return new ResourceCollection.Builder().setMetal(_level * 6).build();
     }
