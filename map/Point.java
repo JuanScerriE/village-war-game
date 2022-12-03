@@ -48,15 +48,15 @@ public class Point {
     }
 
     public Point directionTo(Point other) {
-        int deltaX = _x - other._x;
-        int deltaY = _y - other._y;
+        int deltaX = other._x - _x;
+        int deltaY = other._y - _y;
 
-        if (deltaX > 0) {
-            deltaX /= deltaX;
+        if (deltaX != 0) {
+            deltaX /= Math.abs(deltaX);
         }
 
-        if (deltaY > 0) {
-            deltaY /= deltaY;
+        if (deltaY != 0) {
+            deltaY /= Math.abs(deltaY);
         }
 
         return new Point(deltaX, deltaY);

@@ -116,19 +116,19 @@ public class TroopCollection {
             TroopCollection troops = new TroopCollection();
 
             if (0 < numOfWizards) {
-                LinkedList<Wizard> wizards = new LinkedList<>(_wizards.subList(0,numOfWizards-1));
+                LinkedList<Wizard> wizards = new LinkedList<>(_wizards.subList(0,numOfWizards));
                 troops._wizards.addAll(wizards);
                 _wizards.removeAll(wizards);
             }
 
             if (0 < numOfBrawlers) {
-                LinkedList<Brawler> brawlers = new LinkedList<>(_brawlers.subList(0,numOfBrawlers-1));
+                LinkedList<Brawler> brawlers = new LinkedList<>(_brawlers.subList(0,numOfBrawlers));
                 troops._brawlers.addAll(brawlers);
                 _brawlers.removeAll(brawlers);
             }
 
             if (0 < numOfScouts) {
-                LinkedList<Scout> scouts = new LinkedList<>(_scouts.subList(0,numOfScouts-1));
+                LinkedList<Scout> scouts = new LinkedList<>(_scouts.subList(0,numOfScouts));
                 troops._scouts.addAll(scouts);
                 _scouts.removeAll(scouts);
             }
@@ -141,6 +141,10 @@ public class TroopCollection {
 
     public TroopCollection killTroops(int attackPower) {
         while (attackPower > 0) {
+            if (isEmpty()) {
+                return this;
+            }
+
             double prob = Math.random();
 
             if (prob > .6) {

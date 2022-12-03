@@ -144,19 +144,11 @@ public class Game {
 
     private void loop() {
         while (_map.getVillages().size() > 1) {
-            startRound();
-
             turnPhase();
             marchingPhase();
-
-            endRound();
         }
 
         end();
-    }
-
-    private void startRound() {
-
     }
 
     private void turnPhase() {
@@ -178,15 +170,15 @@ public class Game {
     }
 
     private void marchingPhase() {
-
-    }
-
-    private void endRound() {
-
+        for (var army : _map.getArmies()) {
+            army.march();
+        }
     }
 
     private void end() {
         Village winningVillage = _map.getVillages().get(0);
+
+        System.out.println("The winning player is " + winningVillage.getPlayer().getName());
     }
 
     private void invalid(String message) {

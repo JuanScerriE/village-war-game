@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 // TODO(juan): Add option to go back on submenus.
 // TODO(juan): Print cost of things.
+// TODO(juan): Print number of troops in the Village class.
 
 public class HumanPlayer extends Player {
 
@@ -317,7 +318,7 @@ public class HumanPlayer extends Player {
             scanner.nextLine();
         } while (repeat);
 
-        Status status = village.attackVillage(villageNum, numOfWizards, numOfBrawlers, numOfScouts);
+        Status status = village.attackVillage(villageNum - 1, numOfWizards, numOfBrawlers, numOfScouts);
 
         if (status != Status.SUCCESS) {
             status.printMessage();

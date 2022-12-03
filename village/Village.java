@@ -397,7 +397,7 @@ public class Village {
 
         TroopCollection troops = _troops.sendTroops(numOfWizards, numOfBrawlers, numOfScouts);
 
-        _armies.add(new Army(_enemyVillages.get(villageNum), this, troops));
+        _armies.add(new Army(this, _enemyVillages.get(villageNum), troops));
 
         return Status.SUCCESS;
     }

@@ -25,10 +25,11 @@ public class Army {
 
     public Army march() {
         for (int i = 0; i < _movementSpeed; i++) {
+            // TODO(juan): Check if you are getting a direction of (0, 0)
             if (_goBack) {
-                _location.add(_location.directionTo(_defender.getLocation()));
-            } else {
                 _location.add(_location.directionTo(_attacker.getLocation()));
+            } else {
+                _location.add(_location.directionTo(_defender.getLocation()));
             }
         }
 
@@ -75,7 +76,7 @@ public class Army {
     }
 
     public boolean arrivedAtAttacker() {
-        return _location.distanceFrom(_attacker.getLocation()) <= _movementSpeed;
+        return _location.distanceFrom(_attacker.getLocation()) <= _movementSpeed && _goBack;
     }
 
     public boolean isEnemy(Village village) {
@@ -90,12 +91,12 @@ public class Army {
     @Override
     public String toString() {
         return "Sent By: " + _attacker.getPlayer().getName() +
-        "Attacking:" + _defender.getPlayer().getName() + "\n" +
-        "Location: " + _location + "\n" +
-        "Movement Speed: " + _troops.getSlowestMovementSpeed() + "\n" +
-        "Carrying Capacity: " + _troops.getTotalCarryingCapacity() + "\n" +
-        "Attack Power: " + _troops.getTotalAttackPower() + "\n" +
-        "Movement Speed: " + _troops.getSlowestMovementSpeed() + "\n" +
-        "Number of Troops: " + _troops.size();
+        "\nAttacking: " + _defender.getPlayer().getName() +
+        "\nLocation: " + _location +
+        "\nMovement Speed: " + _troops.getSlowestMovementSpeed() +
+        "\nCarrying Capacity: " + _troops.getTotalCarryingCapacity() +
+        "\nAttack Power: " + _troops.getTotalAttackPower() +
+        "\nMovement Speed: " + _troops.getSlowestMovementSpeed() +
+        "\nNumber of Troops: " + _troops.size();
     }
 }
