@@ -1,5 +1,6 @@
 package player;
 
+import village.Status;
 import village.Village;
 
 // Standard Library
@@ -18,7 +19,7 @@ public class HumanPlayer extends Player {
 
         Scanner scanner = new Scanner(System.in);
 
-        boolean repeat = false;
+        boolean repeat;
 
         do {
             repeat = false;
@@ -47,37 +48,31 @@ public class HumanPlayer extends Player {
             scanner.nextLine();
         } while (repeat);
 
+        Status status = Status.SUCCESS;
+
         switch (option) {
             case 1:
-                if (!village.buildAcademy()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.buildAcademy();
                 break;
             case 2:
-                if (!village.buildFoundation()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.buildFoundation();
                 break;
             case 3:
-                if (!village.buildArena()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.buildArena();
                 break;
             case 4:
-                if (!village.buildFarm()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.buildFarm();
                 break;
             case 5:
-                if (!village.buildMine()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.buildMine();
                 break;
             case 6:
-                if (!village.buildManaTower()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.buildManaTower();
                 break;
+        }
+
+        if (status != Status.SUCCESS) {
+            status.printMessage();
         }
     }
 
@@ -88,13 +83,13 @@ public class HumanPlayer extends Player {
 
         Scanner scanner = new Scanner(System.in);
 
-        boolean repeat = false;
+        boolean repeat;
 
         do {
             repeat = false;
 
             System.out.print(
-                "1. Upgrade Academy\n"
+                     "1. Upgrade Academy\n"
                     +"2. Upgrade Foundation\n"
                     +"3. Upgrade Arena\n"
                     +"4. Upgrade Farm\n"
@@ -117,37 +112,31 @@ public class HumanPlayer extends Player {
             scanner.nextLine();
         } while (repeat);
 
+        Status status = Status.SUCCESS;
+
         switch (option) {
             case 1:
-                if (!village.upgradeAcademy()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.upgradeAcademy();
                 break;
             case 2:
-                if (!village.upgradeFoundation()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.upgradeFoundation();
                 break;
             case 3:
-                if (!village.upgradeArena()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.upgradeArena();
                 break;
             case 4:
-                if (!village.upgradeFarm()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.upgradeFarm();
                 break;
             case 5:
-                if (!village.upgradeMine()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.upgradeMine();
                 break;
             case 6:
-                if (!village.upgradeManaTower()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.upgradeManaTower();
                 break;
+        }
+
+        if (status != Status.SUCCESS) {
+            status.printMessage();
         }
     }
 
@@ -158,25 +147,22 @@ public class HumanPlayer extends Player {
 
         Scanner scanner = new Scanner(System.in);
 
-        boolean repeat = false;
+        boolean repeat;
 
         do {
             repeat = false;
 
             System.out.print(
-                "1. Build Academy\n"
-                    +"2. Build Foundation\n"
-                    +"3. Build Arena\n"
-                    +"4. Build Farm\n"
-                    +"5. Build Mine\n"
-                    +"6. Build Mana Tower\n"
+                     "1. Train Wizards\n"
+                    +"2. Train Brawlers\n"
+                    +"3. Train Scouts\n"
                     +"> ");
 
             try {
                 option = scanner.nextInt();
 
-                if (option < 1 || option > 6) {
-                    System.out.println("Invalid: input must be between 1 and 6 inclusive");
+                if (option < 1 || option > 3) {
+                    System.out.println("Invalid: input must be between 1 and 3 inclusive");
                     repeat = true;
                 }
             } catch (Exception exception) {
@@ -187,37 +173,44 @@ public class HumanPlayer extends Player {
             scanner.nextLine();
         } while (repeat);
 
+        int numOfTroops = 1;
+
+        do {
+            repeat = false;
+
+            System.out.print("Input number of troops\n > ");
+
+            try {
+                numOfTroops = scanner.nextInt();
+
+                if (numOfTroops < 1) {
+                    System.out.println("Invalid: input must be greater than or equal to 1");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                System.out.println("Invalid: input must be a number");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+        Status status = Status.SUCCESS;
+
         switch (option) {
             case 1:
-                if (!village.buildAcademy()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.trainWizards(numOfTroops);
                 break;
             case 2:
-                if (!village.buildFoundation()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.trainBrawlers(numOfTroops);
                 break;
             case 3:
-                if (!village.buildArena()) {
-                    System.out.println("Not enough resources!");
-                }
+                status = village.trainScouts(numOfTroops);
                 break;
-            case 4:
-                if (!village.buildFarm()) {
-                    System.out.println("Not enough resources!");
-                }
-                break;
-            case 5:
-                if (!village.buildMine()) {
-                    System.out.println("Not enough resources!");
-                }
-                break;
-            case 6:
-                if (!village.buildManaTower()) {
-                    System.out.println("Not enough resources!");
-                }
-                break;
+        }
+
+        if (status != Status.SUCCESS) {
+            status.printMessage();
         }
     }
 

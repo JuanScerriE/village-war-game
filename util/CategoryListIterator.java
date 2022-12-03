@@ -13,12 +13,13 @@ public class CategoryListIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        while (_categories.hasNext() || _category.hasNext()) {
-            if (_category == null || !_category.hasNext()) {
-                _category = _categories.next().iterator();
-            } else {
+
+        while (_categories.hasNext() || (_category != null && _category.hasNext())) {
+            if (_category != null && _category.hasNext()) {
                 return true;
             }
+
+            _category = _categories.next().iterator();
         }
 
         return false;

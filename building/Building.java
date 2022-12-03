@@ -9,6 +9,10 @@ public abstract class Building {
     public abstract Building upgrade(ResourceCollection villageResources);
     public abstract boolean canBeUpgraded();
 
+    public int getLevel() {
+        return _level;
+    }
+
     @Override
     public abstract String toString();
 }

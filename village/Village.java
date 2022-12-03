@@ -14,10 +14,13 @@ import player.Player;
 import map.Point;
 import resources.ResourceCollection;
 import troop.Army;
+import troop.Troop;
 import troop.TroopCollection;
+import troop.types.Wizard;
 import util.CategoryList;
 
 // Standard Library
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -183,228 +186,193 @@ public class Village {
         }
     }
 
-    public boolean buildAcademy() {
+    public Status buildAcademy() {
         boolean hasEnough = _resources.hasEnough(Academy.CostToBuild);
 
         if (!hasEnough) {
-            return false;
+            return Status.NOT_ENOUGH_RESOURCES;
         }
 
+        _resources.use(Academy.CostToBuild);
         _troopBuildings.add(new Academy());
 
-        return true;
+        return Status.SUCCESS;
     }
-    public boolean buildFoundation() {
+    public Status buildFoundation() {
         boolean hasEnough = _resources.hasEnough(Foundation.CostToBuild);
 
         if (!hasEnough) {
-            return false;
+            return Status.NOT_ENOUGH_RESOURCES;
         }
 
+        _resources.use(Foundation.CostToBuild);
         _troopBuildings.add(new Foundation());
 
-        return true;
+        return Status.SUCCESS;
     }
-    public boolean buildArena() {
+    public Status buildArena() {
         boolean hasEnough = _resources.hasEnough(Arena.CostToBuild);
 
         if (!hasEnough) {
-            return false;
+            return Status.NOT_ENOUGH_RESOURCES;
         }
 
+        _resources.use(Arena.CostToBuild);
         _troopBuildings.add(new Arena());
 
-        return true;
+        return Status.SUCCESS;
     }
-    public boolean buildFarm() {
+    public Status buildFarm() {
         boolean hasEnough = _resources.hasEnough(Farm.CostToBuild);
 
         if (!hasEnough) {
-            return false;
+            return Status.NOT_ENOUGH_RESOURCES;
         }
 
+        _resources.use(Farm.CostToBuild);
         _resourceBuildings.add(new Farm());
 
-        return true;
+        return Status.SUCCESS;
     }
-    public boolean buildMine() {
+    public Status buildMine() {
         boolean hasEnough = _resources.hasEnough(Mine.CostToBuild);
 
         if (!hasEnough) {
-            return false;
+            return Status.NOT_ENOUGH_RESOURCES;
         }
 
+        _resources.use(Mine.CostToBuild);
         _resourceBuildings.add(new Mine());
 
-        return true;
+        return Status.SUCCESS;
     }
-    public boolean buildManaTower() {
+    public Status buildManaTower() {
         boolean hasEnough = _resources.hasEnough(ManaTower.CostToBuild);
 
         if (!hasEnough) {
-            return false;
+            return Status.NOT_ENOUGH_RESOURCES;
         }
 
+        _resources.use(ManaTower.CostToBuild);
         _resourceBuildings.add(new ManaTower());
 
-        return true;
+        return Status.SUCCESS;
     }
 
-//    public <T extends BuilVding> T getBuilding(Class<T> type) {
-//        for (var building : _resourceBuildings) {
-//            if (building.getClass().isInstance()T.) {
-//                return (T)building;
-//            }
-//        }
-//
-//        for (var building : _troopBuildings) {
-//            if (building != null) {
-//                return (T)building;
-//            }
-//        }
-//
-//        return null;
-//    }
-
-    public boolean upgradeAcademy() {
-        List<Academy> academies = _troopBuildings.getCategory(Academy.class);
-
-        if (academies == null || academies.isEmpty()) {
-            System.out.println("No academy buildings");
-            return false;
+    private Status upgrade(LinkedList<? extends Building> buildings) {
+        if (buildings == null) {
+            return Status.NO_BUILDINGS;
         }
 
-        for (var academy : academies) {
-            if (academy.hasEnoughToUpgrade(_resources)) {
-                if (academy.canBeUpgraded()) {
-                    academy.upgrade(_resources);
+        for (var building : buildings) {
+            if (!building.hasEnoughToUpgrade(_resources)) {
+                return Status.NOT_ENOUGH_RESOURCES;
+            }
 
-                    return true;
-                }
-            } else {
-                return false;
+            if (building.canBeUpgraded()) {
+                building.upgrade(_resources);
+
+                return Status.SUCCESS;
             }
         }
 
-        return false;
+        return Status.NO_BUILDINGS;
     }
-    public boolean upgradeFoundation() {
-        List<Foundation> foundations = _troopBuildings.getCategory(Foundation.class);
 
-        if (foundations == null || foundations.isEmpty()) {
-            System.out.println("No foundation buildings");
-            return false;
-        }
+    public Status upgradeAcademy() {
+        return upgrade(_troopBuildings.getCategory(Academy.class));
+    }
+    public Status upgradeFoundation() {
+        return upgrade(_troopBuildings.getCategory(Foundation.class));
+    }
 
-        for (var foundation : foundations) {
-            if (foundation.hasEnoughToUpgrade(_resources)) {
-                if (foundation.canBeUpgraded()) {
-                    foundation.upgrade(_resources);
+    public Status upgradeArena() {
+        return upgrade(_troopBuildings.getCategory(Arena.class));
+    }
 
-                    return true;
-                }
-            } else {
-                return false;
+    public Status upgradeFarm() {
+        return upgrade(_resourceBuildings.getCategory(Farm.class));
+    }
+
+    public Status upgradeMine() {
+        return upgrade(_resourceBuildings.getCategory(Mine.class));
+    }
+
+    public Status upgradeManaTower() {
+        return upgrade(_resourceBuildings.getCategory(ManaTower.class));
+    }
+
+    private Status trainTroops(List<? extends Troop> troops, ResourceCollection cost, int numOfTroops) {
+        int numOfTrainedTroops = 0;
+
+        for (var troop : troops) {
+            if (numOfTrainedTroops < numOfTroops && troop.canBeTrained()) {
+                troop.train();
+
+                numOfTrainedTroops++;
             }
         }
 
-        return false;
+        _resources.use(cost.mult(numOfTrainedTroops));
+
+        if (numOfTrainedTroops < numOfTroops) {
+            return Status.SOME_TROOPS_CANNOT_BE_TRAINED;
+        }
+
+        return Status.SUCCESS;
+    }
+    
+    public Status trainWizards(int numOfTroops) {
+        if (_troops.getWizards().size() < numOfTroops) {
+            return Status.NOT_ENOUGH_TROOPS;
+        }
+
+        if (!_troopBuildings.hasCategory(Academy.class)) {
+            return Status.NO_BUILDINGS;
+        }
+
+        if (!_resources.hasEnough(Academy.CostToTrainTroop.mult(numOfTroops))) {
+            return Status.NOT_ENOUGH_RESOURCES;
+        }
+
+        return trainTroops(_troops.getWizards(), Academy.CostToTrainTroop, numOfTroops);
     }
 
-    public boolean upgradeArena() {
-        List<Arena> arenas = _troopBuildings.getCategory(Arena.class);
-
-        if (arenas == null || arenas.isEmpty()) {
-            System.out.println("No arena buildings");
-            return false;
+    public Status trainBrawlers(int numOfTroops) {
+        if (_troops.getBrawlers().size() < numOfTroops) {
+            return Status.NOT_ENOUGH_TROOPS;
         }
 
-        for (var arena : arenas) {
-            if (arena.hasEnoughToUpgrade(_resources)) {
-                if (arena.canBeUpgraded()) {
-                    arena.upgrade(_resources);
-
-                    return true;
-                }
-            } else {
-                return false;
-            }
+        if (!_troopBuildings.hasCategory(Arena.class)) {
+            return Status.NO_BUILDINGS;
         }
 
-        return false;
+        if (!_resources.hasEnough(Arena.CostToTrainTroop.mult(numOfTroops))) {
+            return Status.NOT_ENOUGH_RESOURCES;
+        }
+
+        return trainTroops(_troops.getBrawlers(), Arena.CostToTrainTroop, numOfTroops);
     }
 
-    public boolean upgradeFarm() {
-        List<Farm> farms = _resourceBuildings.getCategory(Farm.class);
-
-        if (farms == null || farms.isEmpty()) {
-            System.out.println("No farm buildings");
-            return false;
+    public Status trainScouts(int numOfTroops) {
+        if (_troops.getScouts().size() < numOfTroops) {
+            return Status.NOT_ENOUGH_TROOPS;
         }
 
-        for (var farm : farms) {
-            if (farm.hasEnoughToUpgrade(_resources)) {
-                if (farm.canBeUpgraded()) {
-                    farm.upgrade(_resources);
-
-                    return true;
-                }
-            } else {
-                return false;
-            }
+        if (!_troopBuildings.hasCategory(Foundation.class)) {
+            return Status.NO_BUILDINGS;
         }
 
-        return false;
-    }
-
-    public boolean upgradeMine() {
-        List<Mine> mines = _resourceBuildings.getCategory(Mine.class);
-
-        if (mines == null || mines.isEmpty()) {
-            System.out.println("No mine buildings");
-            return false;
+        if (!_resources.hasEnough(Foundation.CostToTrainTroop.mult(numOfTroops))) {
+            return Status.NOT_ENOUGH_RESOURCES;
         }
 
-        for (var mine : mines) {
-            if (mine.hasEnoughToUpgrade(_resources)) {
-                if (mine.canBeUpgraded()) {
-                    mine.upgrade(_resources);
-
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean upgradeManaTower() {
-        List<ManaTower> manaTowers = _resourceBuildings.getCategory(ManaTower.class);
-
-        if (manaTowers == null || manaTowers.isEmpty()) {
-            System.out.println("No mana tower buildings");
-            return false;
-        }
-
-        for (var manaTower : manaTowers) {
-            if (manaTower.hasEnoughToUpgrade(_resources)) {
-                if (manaTower.canBeUpgraded()) {
-                    manaTower.upgrade(_resources);
-
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        }
-
-        return false;
+        return trainTroops(_troops.getScouts(), Foundation.CostToTrainTroop, numOfTroops);
     }
 
     public Village playerActions() {
         System.out.println(_player.getName());
+
         _player.actions(this);
 
         return this;

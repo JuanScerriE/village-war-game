@@ -25,7 +25,15 @@ public class TroopCollection {
         _scouts.add(scout);
         return this;
     }
-
+    public List<Wizard> getWizards() {
+        return _wizards;
+    }
+    public List<Brawler> getBrawlers() {
+        return _brawlers;
+    }
+    public List<Scout> getScouts() {
+        return _scouts;
+    }
     public TroopCollection add(TroopCollection troops) {
         _wizards.addAll(troops._wizards);
         _brawlers.addAll(troops._brawlers);

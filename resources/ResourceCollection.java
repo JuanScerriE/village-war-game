@@ -33,6 +33,10 @@ public class ResourceCollection {
         return this;
     }
 
+    public ResourceCollection mult(int num) {
+        return new ResourceCollection(_food * num, _metal * num, _mana * num);
+    }
+
     public ResourceCollection move(ResourceCollection other) {
         _food += other._food;
         _metal += other._metal;

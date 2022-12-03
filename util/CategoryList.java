@@ -37,6 +37,16 @@ public class CategoryList<T> implements Iterable<T> {
         return (LinkedList<U>) _categories.get(valueType);
     }
 
+    public <U extends T> boolean hasCategory(Class<U> valueType) {
+        var category = _categories.get(valueType);
+
+        if (category == null || category.isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public Iterator<T> iterator() {
         return new CategoryListIterator<>(_categories.values().iterator());
