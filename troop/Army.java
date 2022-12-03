@@ -85,4 +85,17 @@ public class Army {
     public boolean arrivedAtDefender() {
         return _location.distanceFrom(_defender.getLocation()) <= _movementSpeed;
     }
+
+
+    @Override
+    public String toString() {
+        return "Sent By: " + _attacker.getPlayer().getName() +
+        "Attacking:" + _defender.getPlayer().getName() + "\n" +
+        "Location: " + _location + "\n" +
+        "Movement Speed: " + _troops.getSlowestMovementSpeed() + "\n" +
+        "Carrying Capacity: " + _troops.getTotalCarryingCapacity() + "\n" +
+        "Attack Power: " + _troops.getTotalAttackPower() + "\n" +
+        "Movement Speed: " + _troops.getSlowestMovementSpeed() + "\n" +
+        "Number of Troops: " + _troops.size();
+    }
 }

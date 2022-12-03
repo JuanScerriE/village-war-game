@@ -116,19 +116,19 @@ public class TroopCollection {
             TroopCollection troops = new TroopCollection();
 
             if (0 < numOfWizards) {
-                List<Wizard> wizards = _wizards.subList(0,numOfWizards-1);
+                LinkedList<Wizard> wizards = new LinkedList<>(_wizards.subList(0,numOfWizards-1));
                 troops._wizards.addAll(wizards);
                 _wizards.removeAll(wizards);
             }
 
             if (0 < numOfBrawlers) {
-                List<Brawler> brawlers = _brawlers.subList(0,numOfBrawlers-1);
+                LinkedList<Brawler> brawlers = new LinkedList<>(_brawlers.subList(0,numOfBrawlers-1));
                 troops._brawlers.addAll(brawlers);
                 _brawlers.removeAll(brawlers);
             }
 
             if (0 < numOfScouts) {
-                List<Scout> scouts = _scouts.subList(0,numOfScouts-1);
+                LinkedList<Scout> scouts = new LinkedList<>(_scouts.subList(0,numOfScouts-1));
                 troops._scouts.addAll(scouts);
                 _scouts.removeAll(scouts);
             }
@@ -180,6 +180,10 @@ public class TroopCollection {
         }
 
         return this;
+    }
+
+    public int size() {
+        return _scouts.size() + _brawlers.size() + _wizards.size();
     }
 
     @Override

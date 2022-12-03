@@ -139,6 +139,7 @@ public class Village {
     }
 
     public void PrintVillageStats() {
+        System.out.println("Location: " + _location);
         System.out.println("Health: " + _health);
         System.out.println(_resources);
     }
@@ -184,6 +185,21 @@ public class Village {
             System.out.println((i + 1) + ". " + _enemyVillages.get(i)._player.getName());
             _enemyVillages.get(i).PrintVillageStats();
         }
+    }
+
+    public void PrintArmies() {
+        if (_armies.isEmpty()) {
+            System.out.println("No armies!");
+            return;
+        }
+
+        for (var army : _armies) {
+            System.out.println(army);
+        }
+    }
+
+    public Player getPlayer() {
+        return _player;
     }
 
     public Status buildAcademy() {
@@ -368,6 +384,22 @@ public class Village {
         }
 
         return trainTroops(_troops.getScouts(), Foundation.CostToTrainTroop, numOfTroops);
+    }
+
+    public Status attackVillage(int villageNum, int numOfWizards, int numOfBrawlers, int numOfScouts) {
+        if (numOfWizards + numOfBrawlers + numOfScouts <= 0) {
+            return Status.NO_EMPTY_ARMY;
+        }
+
+        if (!_troops.canSendTroops(numOfWizards, numOfBrawlers, numOfScouts)) {
+            return Status.NOT_ENOUGH_TROOPS;
+        }
+
+        TroopCollection troops = _troops.sendTroops(numOfWizards, numOfBrawlers, numOfScouts);
+
+        _armies.add(new Army(_enemyVillages.get(villageNum), this, troops));
+
+        return Status.SUCCESS;
     }
 
     public Village playerActions() {

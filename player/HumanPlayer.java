@@ -6,6 +6,10 @@ import village.Village;
 // Standard Library
 import java.util.Scanner;
 
+
+// TODO(juan): Add option to go back on submenus.
+// TODO(juan): Print cost of things.
+
 public class HumanPlayer extends Player {
 
     public HumanPlayer(String name) {
@@ -178,7 +182,7 @@ public class HumanPlayer extends Player {
         do {
             repeat = false;
 
-            System.out.print("Input number of troops\n > ");
+            System.out.print("Input number of troops\n> ");
 
             try {
                 numOfTroops = scanner.nextInt();
@@ -214,6 +218,112 @@ public class HumanPlayer extends Player {
         }
     }
 
+    public void attackEnemyVillage(Village village) {
+        int villageNum = 0;
+
+        // TODO: Print the cost each building
+
+        Scanner scanner = new Scanner(System.in);
+
+        village.PrintEnemyVillages();
+
+        boolean repeat;
+
+        do {
+            repeat = false;
+
+            System.out.print("Input village number\n> ");
+
+            try {
+                villageNum = scanner.nextInt();
+
+                if (villageNum < 1 || villageNum > village.getEnemyVillages().size()) {
+                    System.out.println("Invalid: input must be between 1 and " + village.getEnemyVillages().size() +
+                            " inclusive");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                System.out.println("Invalid: input must be a number");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+        int numOfWizards = 1;
+
+        do {
+            repeat = false;
+
+            System.out.print("Input number of wizards\n> ");
+
+            try {
+                numOfWizards = scanner.nextInt();
+
+                if (numOfWizards < 0) {
+                    System.out.println("Invalid: input must be greater than or equal to 0");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                System.out.println("Invalid: input must be a number");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+
+        int numOfBrawlers = 1;
+
+        do {
+            repeat = false;
+
+            System.out.print("Input number of brawlers\n> ");
+
+            try {
+                numOfBrawlers = scanner.nextInt();
+
+                if (numOfBrawlers < 0) {
+                    System.out.println("Invalid: input must be greater than or equal to 0");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                System.out.println("Invalid: input must be a number");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+        int numOfScouts = 1;
+
+        do {
+            repeat = false;
+
+            System.out.print("Input number of scouts\n> ");
+
+            try {
+                numOfScouts = scanner.nextInt();
+
+                if (numOfScouts < 0) {
+                    System.out.println("Invalid: input must be greater than or equal to 0");
+                    repeat = true;
+                }
+            } catch (Exception exception) {
+                System.out.println("Invalid: input must be a number");
+                repeat = true;
+            }
+
+            scanner.nextLine();
+        } while (repeat);
+
+        Status status = village.attackVillage(villageNum, numOfWizards, numOfBrawlers, numOfScouts);
+
+        if (status != Status.SUCCESS) {
+            status.printMessage();
+        }
+    }
+
     @Override
     public void actions(Village village) {
         boolean nextPlayer = false;
@@ -229,20 +339,21 @@ public class HumanPlayer extends Player {
 
                 System.out.print(
                           "Info:                             Building/Training:\n"
-                        + "1. Print village stats            4. Build\n"
-                        + "2. Print stationed troops stats   5. Upgrade\n"
-                        + "3. Print building stats           6. Train\n"
+                        + "1. Print village stats            5. Build\n"
+                        + "2. Print stationed troops stats   6. Upgrade\n"
+                        + "3. Print building stats           7. Train\n"
+                        + "4. Print armies\n"
                         + "Attack Enemy Village:             Next:\n"
-                        + "7. Print enemy villages           9. Next Player\n"
-                        + "8. Attack enemy village\n"
+                        + "8. Print enemy villages           10. Next Player\n"
+                        + "9. Attack enemy village\n"
                         + "> "
                 );
 
                 try {
                     option = scanner.nextInt();
 
-                    if (option < 1 || option > 9) {
-                        System.out.println("Invalid: input must be between 1 and 9 inclusive");
+                    if (option < 1 || option > 10) {
+                        System.out.println("Invalid: input must be between 1 and 10 inclusive");
                         repeat = true;
                     }
                 } catch (Exception exception) {
@@ -264,20 +375,24 @@ public class HumanPlayer extends Player {
                     village.PrintBuildingStats();
                     break;
                 case 4:
-                    buildOption(village);
+                    village.PrintArmies();
                     break;
                 case 5:
-                    upgradeOption(village);
+                    buildOption(village);
                     break;
                 case 6:
-                    trainOption(village);
+                    upgradeOption(village);
                     break;
                 case 7:
-                    village.PrintEnemyVillages();
+                    trainOption(village);
                     break;
                 case 8:
+                    village.PrintEnemyVillages();
                     break;
                 case 9:
+                    attackEnemyVillage(village);
+                    break;
+                case 10:
                     nextPlayer = true;
                     break;
             }

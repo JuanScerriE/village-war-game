@@ -7,6 +7,12 @@ public enum Status {
             System.out.println("Success!");
         }
     },
+    NO_EMPTY_ARMY {
+        @Override
+        public void printMessage() {
+            System.out.println("No empty armies!");
+        }
+    },
     NOT_ENOUGH_RESOURCES {
         @Override
         public void printMessage() {
