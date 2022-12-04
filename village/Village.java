@@ -343,6 +343,8 @@ public class Village {
             return Status.NOT_ENOUGH_TROOPS;
         }
 
+        // I do not think this is required since you won't have
+        // any troops if you do not have wizards
         if (!_troopBuildings.hasCategory(Academy.class)) {
             return Status.NO_BUILDINGS;
         }

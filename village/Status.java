@@ -37,6 +37,12 @@ public enum Status {
             System.out.println("Some troops cannot be trained further!");
         }
     },
+    UNREACHABLE {
+        @Override
+        public void printMessage() {
+            System.out.println("Unreachable!");
+        }
+    },
     REACHED_MAXIMUM_LEVEL {
         @Override
         public void printMessage() {

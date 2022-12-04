@@ -253,6 +253,8 @@ public class HumanPlayer extends Player {
 
         int numOfWizards = 1;
 
+        // TODO(juan): allow users to see how many wizards they have and limit accordingly
+
         do {
             repeat = false;
 
