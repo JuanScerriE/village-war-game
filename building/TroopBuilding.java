@@ -2,7 +2,7 @@ package building;
 
 import troop.Troop;
 import troop.TroopCollection;
-import resources.ResourceCollection;
+import village.ResourceCollection;
 
 // Standard Library
 import java.util.List;

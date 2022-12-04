@@ -4,7 +4,6 @@ import troop.Army;
 import village.Village;
 
 // Standard Library
-import java.util.LinkedList;
 import java.util.List;
 
 public class Map {
@@ -23,7 +22,7 @@ public class Map {
         return _instance;
     }
 
-    public Map setDimensions(Dimensions dimensions) {
+    public Map setDimensionsRef(Dimensions dimensions) {
         if (_dimensions == null) {
             _dimensions = dimensions;
         }
@@ -31,7 +30,7 @@ public class Map {
         return this;
     }
 
-    public Map setVillages(List<Village> villages) {
+    public Map setVillagesRef(List<Village> villages) {
         if (_villages == null) {
             _villages = villages;
         }
@@ -39,22 +38,22 @@ public class Map {
         return this;
     }
 
-    public Map setArmies(List<Army> armies) {
+    public Map setArmiesRef(List<Army> armies) {
         if (_armies == null) {
             _armies = armies;
         }
 
         return this;
     }
-    public Dimensions getDimensions() {
+    public Dimensions dimensionsRef() {
         return _dimensions;
     }
 
-    public List<Village> getVillages() {
+    public List<Village> villagesRef() {
         return _villages;
     }
 
-    public List<Army> getArmies() {
+    public List<Army> armiesRef() {
         return _armies;
     }
 }

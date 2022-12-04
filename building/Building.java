@@ -1,6 +1,6 @@
 package building;
 
-import resources.ResourceCollection;
+import village.ResourceCollection;
 
 public abstract class Building {
     protected int _level = 1;

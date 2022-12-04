@@ -4,7 +4,7 @@ import building.TroopBuilding;
 import building.Building;
 import troop.TroopCollection;
 import troop.types.Brawler;
-import resources.ResourceCollection;
+import village.ResourceCollection;
 
 // Standard Library
 import java.util.List;

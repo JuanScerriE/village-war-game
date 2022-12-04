@@ -12,15 +12,12 @@ import building.troop.Foundation;
 import map.Map;
 import player.Player;
 import map.Point;
-import resources.ResourceCollection;
 import troop.Army;
 import troop.Troop;
 import troop.TroopCollection;
-import troop.types.Wizard;
 import util.CategoryList;
 
 // Standard Library
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,13 +25,15 @@ public class Village {
     private final Player _player;
     private Point _location = null;
     private List<Village> _enemyVillages = null;
-
-    private final List<Army> _armies = Map.getInstance().getArmies();
-
+    private final List<Army> _armies = Map.getInstance().armiesRef();
     private final CategoryList<TroopBuilding> _troopBuildings = new CategoryList<>();
     private final CategoryList<ResourceBuilding> _resourceBuildings = new CategoryList<>();
     private final TroopCollection _troops = new TroopCollection();
-    private final ResourceCollection _resources = new ResourceCollection.Builder().setFood(50).setMana(50).setMetal(50).build();
+    private final ResourceCollection _resources = new ResourceCollection.Builder()
+        .setFood(50)
+        .setMana(50)
+        .setMetal(50)
+        .build();
     private int _health = 1000;
 
     public Village(Player player) {
@@ -102,7 +101,7 @@ public class Village {
         return _health <= 0;
     }
 
-    public void removeSelfFromOthers() {
+    public void removeSelfFromEnemies() {
         for (var village : _enemyVillages) {
             village.removeEnemyVillage(this);
         }
@@ -329,7 +328,7 @@ public class Village {
             }
         }
 
-        _resources.use(cost.mult(numOfTrainedTroops));
+        _resources.use(cost.multiply(numOfTrainedTroops));
 
         if (numOfTrainedTroops < numOfTroops) {
             return Status.SOME_TROOPS_CANNOT_BE_TRAINED;
@@ -349,7 +348,7 @@ public class Village {
             return Status.NO_BUILDINGS;
         }
 
-        if (!_resources.hasEnough(Academy.CostToTrainTroop.mult(numOfTroops))) {
+        if (!_resources.hasEnough(Academy.CostToTrainTroop.multiply(numOfTroops))) {
             return Status.NOT_ENOUGH_RESOURCES;
         }
 
@@ -365,7 +364,7 @@ public class Village {
             return Status.NO_BUILDINGS;
         }
 
-        if (!_resources.hasEnough(Arena.CostToTrainTroop.mult(numOfTroops))) {
+        if (!_resources.hasEnough(Arena.CostToTrainTroop.multiply(numOfTroops))) {
             return Status.NOT_ENOUGH_RESOURCES;
         }
 
@@ -381,7 +380,7 @@ public class Village {
             return Status.NO_BUILDINGS;
         }
 
-        if (!_resources.hasEnough(Foundation.CostToTrainTroop.mult(numOfTroops))) {
+        if (!_resources.hasEnough(Foundation.CostToTrainTroop.multiply(numOfTroops))) {
             return Status.NOT_ENOUGH_RESOURCES;
         }
 

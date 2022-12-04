@@ -23,127 +23,118 @@ public class Game {
     private void setup() {
         int numOfHumanPlayers = 0;
         int numOfAIPlayers = 0;
+
         boolean repeat;
 
         Scanner scanner = new Scanner(System.in);
 
-        // get number of real players
+        // Get number of human players
         do {
             repeat = false;
 
-            System.out.print("Enter the number of human players: ");
+            System.out.print("Enter the number of human players\n> ");
 
             try {
                 numOfHumanPlayers = scanner.nextInt();
 
                 if (numOfHumanPlayers < 1) {
-                    invalid("must be a greater than or equal to 1");
+                    System.out.println("Invalid: must be a greater than or equal to 1");
                     repeat = true;
                 }
             } catch (Exception exception) {
-                invalid("must be a integer");
+                System.out.println("Invalid: must be a integer");
                 repeat = true;
             }
 
             scanner.nextLine();
         } while (repeat);
 
-        // get number of AI players
+        // Get number of AI players
         do {
             repeat = false;
 
-            System.out.print("Enter the number of AI players: ");
+            System.out.print("Enter the number of AI players\n> ");
 
             try {
                 numOfAIPlayers = scanner.nextInt();
 
                 if (numOfHumanPlayers == 1) {
                     if (numOfAIPlayers < 1) {
-                        invalid("must be a greater than or equal to 1");
+                        System.out.println("Invalid: must be a greater than or equal to 1");
                         repeat = true;
                     }
                 } else {
                     if (numOfAIPlayers < 0) {
-                        invalid("must be a greater than or equal to 0");
+                        System.out.println("Invalid: must be a greater than or equal to 0");
                         repeat = true;
                     }
                 }
 
                 scanner.nextLine();
             } catch (Exception exception) {
-                invalid("must be an integer");
+                System.out.println("Invalid: must be an integer");
                 repeat = true;
             }
         } while (repeat);
 
-        // calculate map dimensions
-        Dimensions dimensions = calcMapDimensions(numOfHumanPlayers + numOfAIPlayers);
+        // Calculate map dimensions
+        int villageRadius = 20;
 
-        _map
-                .setDimensions(dimensions)
-                .setArmies(new LinkedList<>());
+        int length = villageRadius * (int)Math.ceil(Math.sqrt(numOfHumanPlayers + numOfAIPlayers));
 
-        // create players and villages
+        Dimensions dimensions = new Dimensions(length, length);
+
         List<Village> villages = new LinkedList<>();
 
+        _map.setDimensionsRef(dimensions)
+            .setVillagesRef(villages)
+            .setArmiesRef(new LinkedList<>());
+
+        // Create players and villages
+
         for (int i = 0; i < numOfHumanPlayers; i++) {
-            villages.add(new Village(new HumanPlayer(String.format("Human %d", i + 1))));
+            villages.add(new Village(new HumanPlayer("Human " + (i + 1))));
         }
 
         for (int i = 0; i < numOfAIPlayers; i++) {
-            villages.add(new Village(new AIPlayer(String.format("AI %d", i + 1))));
+            villages.add(new Village(new AIPlayer("AI " + (i + 1))));
         }
 
 
-        // prep for location calculations
-        int villageRadius = 20;
-
-        boolean isLocationSuitable;
-
+        // Prep for location calculations
+        boolean locationSuitable;
         Point location;
 
         for (var village : villages) {
             LinkedList<Village> enemyVillages = new LinkedList<>(villages);
-
             enemyVillages.remove(village);
 
-            // calculate village location
+            // Calculate village location
             do {
-                isLocationSuitable = true;
-
+                locationSuitable = true;
                 location = dimensions.randomPoint();
 
+                // Ensure villages are adequately spaced
                 for (var enemyVillage : enemyVillages) {
-                    if (enemyVillage.getLocation() != null) {
-                        if (location.distanceFrom(enemyVillage.getLocation()) < villageRadius) {
-                            isLocationSuitable = false;
-
-                            break;
-                        }
+                    if (
+                        enemyVillage.getLocation() != null &&
+                        location.distanceFrom(enemyVillage.getLocation()) < villageRadius
+                    ) {
+                        locationSuitable = false;
+                        break;
                     }
                 }
-            } while (!isLocationSuitable);
+            } while (!locationSuitable);
 
-            // set village properties
+            // Set village properties
             village
-                    .setEnemyVillages(enemyVillages)
-                    .setLocation(location);
-
+                .setEnemyVillages(enemyVillages)
+                .setLocation(location);
         }
-
-        _map.setVillages(villages);
-    }
-
-    private Dimensions calcMapDimensions(int numOfPlayers) {
-        int villageRadius = 20;
-
-        int length = villageRadius * (int)Math.ceil(Math.sqrt(numOfPlayers));
-
-        return new Dimensions(length, length);
     }
 
     private void loop() {
-        while (_map.getVillages().size() > 1) {
+        while (_map.villagesRef().size() > 1) {
             turnPhase();
             marchingPhase();
         }
@@ -152,36 +143,32 @@ public class Game {
     }
 
     private void turnPhase() {
-        List<Village> clonedVillages = new LinkedList<>(_map.getVillages());
-
-        for (var village : clonedVillages) {
+        for (var village : new LinkedList<>(_map.villagesRef())) {
             village
-                    .friendlyTroopArrival()
-                    .enemyTroopArrival();
+                .friendlyTroopArrival()
+                .enemyTroopArrival();
+
             if (village.isDestroyed()) {
-                village.removeSelfFromOthers();
-                _map.getVillages().remove(village);
+                village.removeSelfFromEnemies();
+
+                _map.villagesRef().remove(village);
             } else {
                 village
-                        .resourceEarning()
-                        .playerActions();
+                    .resourceEarning()
+                    .playerActions();
             }
         }
     }
 
     private void marchingPhase() {
-        for (var army : _map.getArmies()) {
+        for (var army : _map.armiesRef()) {
             army.march();
         }
     }
 
     private void end() {
-        Village winningVillage = _map.getVillages().get(0);
+        Village winningVillage = _map.villagesRef().get(0);
 
-        System.out.println("The winning player is " + winningVillage.getPlayer().getName());
-    }
-
-    private void invalid(String message) {
-        System.out.printf("Invalid: %s%n", message);
+        System.out.println("The winning player is: " + winningVillage.getPlayer().getName());
     }
 }

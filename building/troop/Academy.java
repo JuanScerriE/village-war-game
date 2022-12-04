@@ -2,11 +2,10 @@ package building.troop;
 
 import building.Building;
 import building.TroopBuilding;
-import resources.ResourceCollection;
+import village.ResourceCollection;
 import troop.TroopCollection;
 import troop.types.Wizard;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class Academy extends TroopBuilding<Wizard> {

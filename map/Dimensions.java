@@ -1,8 +1,8 @@
 package map;
 
 public class Dimensions {
-    private int _cols;
-    private int _rows;
+    private final int _cols;
+    private final int _rows;
 
     public Dimensions(int cols, int rows) {
         _cols = cols;
@@ -11,8 +11,8 @@ public class Dimensions {
 
     public Point randomPoint() {
         return new Point(
-                (int)(Math.random()*_cols),
-                (int)(Math.random()*_rows)
+            (int)(Math.random()*_cols),
+            (int)(Math.random()*_rows)
         );
     }
 }

@@ -1,7 +1,7 @@
 package troop;
 
 import map.Point;
-import resources.ResourceCollection;
+import village.ResourceCollection;
 import village.Village;
 
 public class Army {
@@ -48,7 +48,7 @@ public class Army {
         if (!_troops.isEmpty()) {
             goBack();
             _defender.damageVillage(_troops.getTotalAttackPower());
-            _resources.add(_defender.getResources().takeResources(_carryingCapacity));
+            _resources.add(_defender.getResources().take(_carryingCapacity));
         }
 
         return this;

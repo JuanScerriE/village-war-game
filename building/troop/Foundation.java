@@ -2,13 +2,11 @@ package building.troop;
 
 import building.TroopBuilding;
 import building.Building;
-import troop.Troop;
 import troop.TroopCollection;
 import troop.types.Scout;
-import resources.ResourceCollection;
+import village.ResourceCollection;
 
 // Standard Library
-import java.util.LinkedList;
 import java.util.List;
 
 public class Foundation extends TroopBuilding<Scout> {

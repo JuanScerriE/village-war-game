@@ -2,7 +2,7 @@ package building.resource;
 
 import building.Building;
 import building.ResourceBuilding;
-import resources.ResourceCollection;
+import village.ResourceCollection;
 
 public class Mine extends ResourceBuilding {
     public static final ResourceCollection CostToBuild = new ResourceCollection.Builder()

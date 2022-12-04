@@ -1,4 +1,4 @@
-package resources;
+package village;
 
 public class ResourceCollection {
     private int _food;
@@ -25,16 +25,12 @@ public class ResourceCollection {
         return this;
     }
 
-    public ResourceCollection add(ResourceCollection provision) {
-        _food += provision._food;
-        _metal += provision._metal;
-        _mana += provision._mana;
-
-        return this;
+    public ResourceCollection add(ResourceCollection other) {
+        return new ResourceCollection(_food += other._food, _metal += other._metal, _mana += other._mana);
     }
 
-    public ResourceCollection mult(int num) {
-        return new ResourceCollection(_food * num, _metal * num, _mana * num);
+    public ResourceCollection multiply(int number) {
+        return new ResourceCollection(_food * number, _metal * number, _mana * number);
     }
 
     public ResourceCollection move(ResourceCollection other) {
@@ -49,7 +45,7 @@ public class ResourceCollection {
         return this;
     }
 
-    public ResourceCollection takeResources(int amount) {
+    public ResourceCollection take(int amount) {
         ResourceCollection.Builder builder = new Builder();
 
         if (amount > _mana + _food + _metal) {
@@ -64,7 +60,7 @@ public class ResourceCollection {
 
         int manaAmount = (int)(amount*Math.random()*0.5);
         int foodAmount = (int)(amount*Math.random()*0.5);
-        int metalAmount = amount - manaAmount - foodAmount > 0 ? amount - manaAmount - foodAmount: 0;
+        int metalAmount = amount - manaAmount - foodAmount > 0 ? amount - manaAmount - foodAmount : 0;
 
         if (manaAmount > _mana) {
             builder.setMana(_mana);
@@ -99,7 +95,7 @@ public class ResourceCollection {
 
     @Override
     public String toString() {
-        return "Food: " + _food + "\nMetal: " + _metal + "\nMana: " + _mana;
+        return "[Food: %d, Metal: %d, Mana: %d]".formatted(_food, _metal, _mana);
     }
 
     public static class Builder {

@@ -1,7 +1,5 @@
 package troop;
 
-import resources.ResourceCollection;
-
 public abstract class Troop {
     protected int _health;
     protected int _attackPower;

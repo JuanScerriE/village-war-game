@@ -1,6 +1,6 @@
 package building;
 
-import resources.ResourceCollection;
+import village.ResourceCollection;
 
 public abstract class ResourceBuilding extends Building {
     public abstract ResourceCollection generateResources();
