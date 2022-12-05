@@ -88,11 +88,7 @@ public class CategoryList<T> implements Iterable<T> {
     public <U extends T> boolean hasCategory(Class<U> valueType) {
         var category = _categories.get(valueType);
 
-        if (category == null || category.isEmpty()) {
-            return false;
-        }
-
-        return true;
+        return category != null && !category.isEmpty();
     }
 
     public int size() {
@@ -123,7 +119,7 @@ public class CategoryList<T> implements Iterable<T> {
     }
 
     public static class CategoryListIterator<T> implements Iterator<T> {
-        private Iterator<LinkedList<? extends T>> _categories = null;
+        private final Iterator<LinkedList<? extends T>> _categories;
         private Iterator<? extends T> _category = null;
 
         public CategoryListIterator(Collection<LinkedList<? extends T>> categories) {

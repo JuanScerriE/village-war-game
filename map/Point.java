@@ -4,31 +4,11 @@ public class Point {
     private int _x;
     private int _y;
 
-    public static Point random(int cols, int rows) {
-        return new Point(
-                (int)(Math.random()*cols),
-                (int)(Math.random()*rows)
-        );
-    }
-
     public Point(Point other) {
        _x = other._x;
        _y = other._y;
     }
     public Point(int x, int y) {
-        _x = x;
-        _y = y;
-    }
-
-    public int getX() {
-        return _x;
-    }
-
-    public int getY() {
-        return _y;
-    }
-
-    public void update(int x, int y) {
         _x = x;
         _y = y;
     }

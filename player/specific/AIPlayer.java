@@ -90,8 +90,6 @@ public class AIPlayer extends Player {
     public void actions(Village village) {
         boolean nextPlayer = false;
 
-        int option = 0;
-
         while (!nextPlayer) {
             if (0.4 < Math.random()) {
                 buildOption(village);

@@ -3,7 +3,7 @@ package player;
 import village.Village;
 
 public abstract class Player {
-    private String _name;
+    private final String _name;
     public Player(String name) {
         _name = name;
     }

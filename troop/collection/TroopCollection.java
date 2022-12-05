@@ -64,7 +64,7 @@ public class TroopCollection {
         int totalCarryingCapacity = 0;
 
         for (var troop : _troops) {
-            totalCarryingCapacity += troop.getCarryingCapacity();;
+            totalCarryingCapacity += troop.getCarryingCapacity();
         }
 
         return totalCarryingCapacity;
