@@ -345,7 +345,7 @@ public class HumanPlayer extends Player {
     public void printCosts() {
         System.out.println("Costs:");
         printCostsOfBuilding();
-        printCostsOfBuilding();
+        printCostsOfUpgrades();
         printCostsOfTraining();
     }
 
