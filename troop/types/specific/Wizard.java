@@ -1,20 +1,18 @@
-package troop.types;
+package troop.types.specific;
 
-import troop.Troop;
+import troop.types.Troop;
 
 public class Wizard extends Troop {
     public Wizard() {
-        super(
-                15,
-                30,
-                5,
-                2,
-                3
-        );
+        _health = 15;
+        _attackPower = 20;
+        _carryingCapacity = 5;
+        _movementSpeed = 2;
+        _maximumLevel = 3;
     }
 
     @Override
-    public Troop train() {
+    public Wizard train() {
         if (canBeTrained()) {
             _level++;
 

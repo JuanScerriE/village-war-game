@@ -1,14 +1,11 @@
-package building.troop;
+package building.troop.specific;
 
-import building.Building;
 import building.TroopBuilding;
-import village.ResourceCollection;
-import troop.TroopCollection;
-import troop.types.Wizard;
+import resource.collection.ResourceCollection;
+import troop.collection.TroopCollection;
+import troop.types.specific.Wizard;
 
-import java.util.List;
-
-public class Academy extends TroopBuilding<Wizard> {
+public class Academy extends TroopBuilding {
     public static final ResourceCollection CostToBuild = new ResourceCollection.Builder()
             .setFood(10)
             .setMetal(15)
@@ -27,7 +24,9 @@ public class Academy extends TroopBuilding<Wizard> {
             .setMana(3)
             .build();
 
-    public static final int MaximumLevel = 3;
+    public Academy() {
+        _maximumLevel = 3;
+    }
 
     @Override
     public boolean hasEnoughToUpgrade(ResourceCollection villageResources) {
@@ -35,8 +34,8 @@ public class Academy extends TroopBuilding<Wizard> {
     }
 
     @Override
-    public Building upgrade(ResourceCollection villageResources) {
-        if (hasEnoughToUpgrade(villageResources) && _level <= MaximumLevel) {
+    public Academy upgrade(ResourceCollection villageResources) {
+        if (hasEnoughToUpgrade(villageResources) && canBeUpgraded()) {
             villageResources.use(CostToUpgrade);
             _level++;
         }
@@ -55,24 +54,6 @@ public class Academy extends TroopBuilding<Wizard> {
         }
 
         return wizards;
-    }
-
-    @Override
-    public void trainTroops(List<Wizard> troops, ResourceCollection villageResources) {
-        for (var troop : troops) {
-            if (villageResources.hasEnough(CostToTrainTroop)) {
-                if (troop.canBeTrained()) {
-                    troop.train();
-                }
-            } else {
-                break;
-            }
-        }
-    }
-
-    @Override
-    public boolean canBeUpgraded() {
-        return _level < MaximumLevel;
     }
 
     @Override

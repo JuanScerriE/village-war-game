@@ -1,5 +1,9 @@
-package player;
+package player.specific;
 
+import player.Player;
+import troop.types.specific.Brawler;
+import troop.types.specific.Scout;
+import troop.types.specific.Wizard;
 import village.Status;
 import village.Village;
 
@@ -71,9 +75,9 @@ public class AIPlayer extends Player {
     public void attackEnemyVillage(Village village) {
         int villageNum = (int)Math.ceil((village.getEnemyVillages().size() - 1)*Math.random() + 1);
 
-        int numOfWizards = (int)Math.ceil((village.getTroops().getWizards().size() - 1)*Math.random() + 1);
-        int numOfBrawlers = (int)Math.ceil((village.getTroops().getBrawlers().size() - 1)*Math.random() + 1);
-        int numOfScouts = (int)Math.ceil((village.getTroops().getScouts().size() - 1)*Math.random() + 1);
+        int numOfWizards = (int)Math.ceil((village.getStation().sizeOfCategory(Wizard.class) - 1)*Math.random() + 1);
+        int numOfBrawlers = (int)Math.ceil((village.getStation().sizeOfCategory(Brawler.class) - 1)*Math.random() + 1);
+        int numOfScouts = (int)Math.ceil((village.getStation().sizeOfCategory(Scout.class) - 1)*Math.random() + 1);
 
         Status status = village.attackVillage(villageNum - 1, numOfWizards, numOfBrawlers, numOfScouts);
 
@@ -97,11 +101,11 @@ public class AIPlayer extends Player {
                 upgradeOption(village);
             }
 
-            if (!village.getTroops().isEmpty() && 0.4 < Math.random()) {
+            if (!village.getStation().isEmpty() && 0.4 < Math.random()) {
                 trainOption(village);
             }
 
-            if (!village.getTroops().isEmpty() && 0.6 < Math.random()) {
+            if (!village.getStation().isEmpty() && 0.6 < Math.random()) {
                 attackEnemyVillage(village);
             }
 

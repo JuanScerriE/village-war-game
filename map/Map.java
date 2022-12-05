@@ -1,6 +1,6 @@
 package map;
 
-import troop.Army;
+import troop.collection.dependant.Army;
 import village.Village;
 
 // Standard Library

@@ -1,20 +1,18 @@
-package troop.types;
+package troop.types.specific;
 
-import troop.Troop;
+import troop.types.Troop;
 
 public class Scout extends Troop {
     public Scout() {
-        super(
-                15,
-                15,
-                20,
-                4,
-                3
-        );
+        _health = 15;
+        _attackPower = 15;
+        _carryingCapacity = 20;
+        _movementSpeed = 4;
+        _maximumLevel = 3;
     }
 
     @Override
-    public Troop train() {
+    public Scout train() {
         if (canBeTrained()) {
             _level++;
 

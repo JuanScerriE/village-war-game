@@ -2,8 +2,8 @@ import map.Dimensions;
 import map.Point;
 import map.Map;
 
-import player.HumanPlayer;
-import player.AIPlayer;
+import player.specific.HumanPlayer;
+import player.specific.AIPlayer;
 
 import village.Village;
 

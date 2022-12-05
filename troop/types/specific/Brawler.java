@@ -1,20 +1,18 @@
-package troop.types;
+package troop.types.specific;
 
-import troop.Troop;
+import troop.types.Troop;
 
 public class Brawler extends Troop {
     public Brawler() {
-        super(
-                20,
-                25,
-                10,
-                1,
-                3
-        );
+        _health = 20;
+        _attackPower = 25;
+        _carryingCapacity = 10;
+        _movementSpeed = 1;
+        _maximumLevel = 3;
     }
 
     @Override
-    public Troop train() {
+    public Brawler train() {
         if (canBeTrained()) {
             _level++;
 

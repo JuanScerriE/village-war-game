@@ -42,12 +42,6 @@ public enum Status {
         public void printMessage() {
             System.out.println("Unreachable!");
         }
-    },
-    REACHED_MAXIMUM_LEVEL {
-        @Override
-        public void printMessage() {
-            System.out.println("Reached maximum level!");
-        }
     };
 
     public abstract void printMessage();

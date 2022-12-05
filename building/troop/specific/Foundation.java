@@ -1,15 +1,13 @@
-package building.troop;
+package building.troop.specific;
 
 import building.TroopBuilding;
-import building.Building;
-import troop.TroopCollection;
-import troop.types.Scout;
-import village.ResourceCollection;
+import resource.collection.ResourceCollection;
+import troop.collection.TroopCollection;
+import troop.types.specific.Scout;
 
 // Standard Library
-import java.util.List;
 
-public class Foundation extends TroopBuilding<Scout> {
+public class Foundation extends TroopBuilding {
     public static final ResourceCollection CostToBuild = new ResourceCollection.Builder()
             .setFood(10)
             .setMetal(15)
@@ -28,7 +26,9 @@ public class Foundation extends TroopBuilding<Scout> {
             .setMana(1)
             .build();
 
-    public static final int MaximumLevel = 3;
+    public Foundation() {
+        _maximumLevel = 3;
+    }
 
     @Override
     public boolean hasEnoughToUpgrade(ResourceCollection villageResources) {
@@ -36,8 +36,8 @@ public class Foundation extends TroopBuilding<Scout> {
     }
 
     @Override
-    public Building upgrade(ResourceCollection villageResources) {
-        if (hasEnoughToUpgrade(villageResources) && _level <= MaximumLevel) {
+    public Foundation upgrade(ResourceCollection villageResources) {
+        if (hasEnoughToUpgrade(villageResources) && canBeUpgraded()) {
             villageResources.use(CostToUpgrade);
             _level++;
         }
@@ -56,24 +56,6 @@ public class Foundation extends TroopBuilding<Scout> {
         }
 
         return scouts;
-    }
-
-    @Override
-    public void trainTroops(List<Scout> troops, ResourceCollection villageResources) {
-        for (var troop : troops) {
-            if (villageResources.hasEnough(CostToTrainTroop)) {
-                if (troop.canBeTrained()) {
-                    troop.train();
-                }
-            } else {
-                break;
-            }
-        }
-    }
-
-    @Override
-    public boolean canBeUpgraded() {
-        return _level < MaximumLevel;
     }
 
     @Override

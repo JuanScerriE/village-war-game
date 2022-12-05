@@ -1,23 +1,24 @@
-package building.resource;
+package building.resource.specific;
 
-import building.Building;
 import building.ResourceBuilding;
-import village.ResourceCollection;
+import resource.collection.ResourceCollection;
 
-public class ManaTower extends ResourceBuilding {
+public class Farm extends ResourceBuilding {
     public static final ResourceCollection CostToBuild = new ResourceCollection.Builder()
             .setFood(10)
-            .setMetal(25)
+            .setMetal(20)
             .setMana(5)
             .build();
 
     public static final ResourceCollection CostToUpgrade = new ResourceCollection.Builder()
             .setFood(5)
-            .setMetal(20)
-            .setMana(15)
+            .setMetal(25)
+            .setMana(5)
             .build();
 
-    public static final int MaximumLevel = 4;
+    public Farm() {
+        _maximumLevel = 3;
+    }
 
     @Override
     public boolean hasEnoughToUpgrade(ResourceCollection villageResources) {
@@ -25,8 +26,8 @@ public class ManaTower extends ResourceBuilding {
     }
 
     @Override
-    public Building upgrade(ResourceCollection villageResources) {
-        if (hasEnoughToUpgrade(villageResources) && _level <= MaximumLevel) {
+    public Farm upgrade(ResourceCollection villageResources) {
+        if (hasEnoughToUpgrade(villageResources) && canBeUpgraded()) {
             villageResources.use(CostToUpgrade);
             _level++;
         }
@@ -36,16 +37,11 @@ public class ManaTower extends ResourceBuilding {
 
     @Override
     public ResourceCollection generateResources() {
-        return new ResourceCollection.Builder().setMana(_level * 4).build();
-    }
-
-    @Override
-    public boolean canBeUpgraded() {
-        return _level < MaximumLevel;
+        return new ResourceCollection.Builder().setFood(_level * 5).build();
     }
 
     @Override
     public String toString() {
-        return "Mana Tower, Level " + _level;
+        return "Farm, Level " + _level;
     }
 }

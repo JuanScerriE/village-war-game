@@ -1,4 +1,4 @@
-package village;
+package resource.collection;
 
 public class ResourceCollection {
     private int _food;

@@ -3,18 +3,23 @@ package village;
 import building.Building;
 import building.ResourceBuilding;
 import building.TroopBuilding;
-import building.resource.Farm;
-import building.resource.ManaTower;
-import building.resource.Mine;
-import building.troop.Academy;
-import building.troop.Arena;
-import building.troop.Foundation;
+import building.resource.specific.Farm;
+import building.resource.specific.ManaTower;
+import building.resource.specific.Mine;
+import building.troop.specific.Academy;
+import building.troop.specific.Arena;
+import building.troop.specific.Foundation;
 import map.Map;
 import player.Player;
 import map.Point;
-import troop.Army;
-import troop.Troop;
-import troop.TroopCollection;
+import resource.collection.ResourceCollection;
+import troop.collection.TroopCollection;
+import troop.collection.dependant.Army;
+import troop.types.Troop;
+import troop.collection.dependant.Station;
+import troop.types.specific.Brawler;
+import troop.types.specific.Scout;
+import troop.types.specific.Wizard;
 import util.CategoryList;
 
 // Standard Library
@@ -28,7 +33,7 @@ public class Village {
     private final List<Army> _armies = Map.getInstance().armiesRef();
     private final CategoryList<TroopBuilding> _troopBuildings = new CategoryList<>();
     private final CategoryList<ResourceBuilding> _resourceBuildings = new CategoryList<>();
-    private final TroopCollection _troops = new TroopCollection();
+    private final Station _troops = new Station();
     private final ResourceCollection _resources = new ResourceCollection.Builder()
         .setFood(50)
         .setMana(50)
@@ -64,7 +69,7 @@ public class Village {
         return _enemyVillages;
     }
 
-    public TroopCollection getTroops() {
+    public Station getStation() {
         return _troops;
     }
     public ResourceCollection getResources() {
@@ -85,7 +90,7 @@ public class Village {
         List<Army> clonedArmies = new LinkedList<>(_armies);
 
         for (var army : clonedArmies) {
-            if (army.isFriendly(this) && army.arrivedAtAttacker()) {
+            if (army.isFriendly(this) && army.arrivedBack()) {
                 _armies.remove(army.disband());
             }
         }
@@ -111,7 +116,7 @@ public class Village {
         List<Army> clonedArmies = new LinkedList<>(_armies);
 
         for (var army : clonedArmies) {
-            if (army.isEnemy(this) && army.arrivedAtDefender()) {
+            if (army.isEnemy(this) && army.arrived()) {
                 if (isDestroyed()) {
                     army.goBack();
                 } else {
@@ -127,23 +132,25 @@ public class Village {
 
     public Village resourceEarning() {
         for (var building : _resourceBuildings) {
-            _resources.add(building.generateResources());
+            _resources.move(building.generateResources());
         }
 
         for (var building : _troopBuildings) {
-            _troops.add(building.generateTroops());
+            _troops.addAll(building.generateTroops());
         }
 
         return this;
     }
 
-    public void PrintVillageStats() {
-        System.out.println("Location: " + _location);
-        System.out.println("Health: " + _health);
-        System.out.println(_resources);
+    public void printVillageStats() {
+        System.out.println(
+                  "Location: " + _location
+                + "\nHealth: " + _health
+                + "\nResources: " + _resources
+        );
     }
 
-    public void PrintStationedTroopsStats() {
+    public void printStationedTroopsStats() {
         if (_troops.isEmpty()) {
             System.out.println("No troops!");
         } else {
@@ -151,7 +158,7 @@ public class Village {
         }
     }
 
-    public void PrintBuildingStats() {
+    public void printBuildingStats() {
         System.out.println("Resource Buildings:");
 
         if (_resourceBuildings.isEmpty()) {
@@ -159,7 +166,7 @@ public class Village {
         }
 
         for (var building : _resourceBuildings) {
-            System.out.println("-" + building);
+            System.out.println("- " + building);
         }
 
         System.out.println("Troop Buildings:");
@@ -169,11 +176,11 @@ public class Village {
         }
 
         for (var building : _troopBuildings) {
-            System.out.println("-" + building);
+            System.out.println("- " + building);
         }
     }
 
-    public void PrintEnemyVillages() {
+    public void printEnemyVillages() {
         System.out.println("Enemy Villages:");
 
         if (_enemyVillages.isEmpty()) {
@@ -182,14 +189,14 @@ public class Village {
 
         for (int i = 0; i < _enemyVillages.size(); i++) {
             System.out.println((i + 1) + ". " + _enemyVillages.get(i)._player.getName());
-            _enemyVillages.get(i).PrintVillageStats();
+
+            _enemyVillages.get(i).printVillageStats();
         }
     }
 
-    public void PrintArmies() {
+    public void printArmies() {
         if (_armies.isEmpty()) {
             System.out.println("No armies!");
-            return;
         }
 
         for (var army : _armies) {
@@ -336,14 +343,12 @@ public class Village {
 
         return Status.SUCCESS;
     }
-    
+
     public Status trainWizards(int numOfTroops) {
-        if (_troops.getWizards().size() < numOfTroops) {
+        if (_troops.sizeOfCategory(Wizard.class) < numOfTroops) {
             return Status.NOT_ENOUGH_TROOPS;
         }
 
-        // I do not think this is required since you won't have
-        // any troops if you do not have wizards
         if (!_troopBuildings.hasCategory(Academy.class)) {
             return Status.NO_BUILDINGS;
         }
@@ -352,11 +357,11 @@ public class Village {
             return Status.NOT_ENOUGH_RESOURCES;
         }
 
-        return trainTroops(_troops.getWizards(), Academy.CostToTrainTroop, numOfTroops);
+        return trainTroops(_troops.getCategory(Wizard.class), Academy.CostToTrainTroop, numOfTroops);
     }
 
     public Status trainBrawlers(int numOfTroops) {
-        if (_troops.getBrawlers().size() < numOfTroops) {
+        if (_troops.sizeOfCategory(Brawler.class) < numOfTroops) {
             return Status.NOT_ENOUGH_TROOPS;
         }
 
@@ -368,11 +373,11 @@ public class Village {
             return Status.NOT_ENOUGH_RESOURCES;
         }
 
-        return trainTroops(_troops.getBrawlers(), Arena.CostToTrainTroop, numOfTroops);
+        return trainTroops(_troops.getCategory(Brawler.class), Arena.CostToTrainTroop, numOfTroops);
     }
 
     public Status trainScouts(int numOfTroops) {
-        if (_troops.getScouts().size() < numOfTroops) {
+        if (_troops.sizeOfCategory(Scout.class) < numOfTroops) {
             return Status.NOT_ENOUGH_TROOPS;
         }
 
@@ -384,7 +389,7 @@ public class Village {
             return Status.NOT_ENOUGH_RESOURCES;
         }
 
-        return trainTroops(_troops.getScouts(), Foundation.CostToTrainTroop, numOfTroops);
+        return trainTroops(_troops.getCategory(Scout.class), Foundation.CostToTrainTroop, numOfTroops);
     }
 
     public Status attackVillage(int villageNum, int numOfWizards, int numOfBrawlers, int numOfScouts) {
@@ -392,11 +397,11 @@ public class Village {
             return Status.NO_EMPTY_ARMY;
         }
 
-        if (!_troops.canSendTroops(numOfWizards, numOfBrawlers, numOfScouts)) {
+        if (!_troops.canSend(numOfWizards, numOfBrawlers, numOfScouts)) {
             return Status.NOT_ENOUGH_TROOPS;
         }
 
-        TroopCollection troops = _troops.sendTroops(numOfWizards, numOfBrawlers, numOfScouts);
+        TroopCollection troops = _troops.send(numOfWizards, numOfBrawlers, numOfScouts);
 
         _armies.add(new Army(this, _enemyVillages.get(villageNum), troops));
 
