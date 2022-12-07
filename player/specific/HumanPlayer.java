@@ -408,4 +408,9 @@ public class HumanPlayer extends Player {
             }
         }
     }
+
+    @Override
+    public void notify(String text) {
+        System.out.println(text);
+    }
 }

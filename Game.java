@@ -5,6 +5,7 @@ import map.Map;
 import player.specific.HumanPlayer;
 import player.specific.AIPlayer;
 
+import tick.Tick;
 import village.Village;
 
 // Standard Library
@@ -14,6 +15,7 @@ import java.util.Scanner;
 
 public class Game {
     private final Map _map = Map.getInstance();
+    private final Tick _tick = Tick.getInstance();
 
     public void start() {
         setup();
@@ -137,6 +139,7 @@ public class Game {
         while (_map.villagesRef().size() > 1) {
             turnPhase();
             marchingPhase();
+            _tick.increment();
         }
 
         end();

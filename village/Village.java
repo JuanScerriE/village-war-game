@@ -91,6 +91,7 @@ public class Village {
 
         for (var army : clonedArmies) {
             if (army.isFriendly(this) && army.arrivedBack()) {
+                _player.notify(army + "\n Has Arrived!");
                 _armies.remove(army.disband());
             }
         }

@@ -11,4 +11,5 @@ public abstract class Player {
         return _name;
     }
     public abstract void actions(Village village);
+    public abstract void notify(String text);
 }

@@ -1,15 +1,16 @@
 package player.specific;
 
 import player.Player;
+import tick.Tick;
 import troop.types.specific.Brawler;
 import troop.types.specific.Scout;
 import troop.types.specific.Wizard;
 import village.Status;
 import village.Village;
 
-// TODO(juan): improve the AI by possibly factoring in cost of actions
-
 public class AIPlayer extends Player {
+
+    private final Tick _tick = Tick.getInstance();
 
     public AIPlayer(String name) {
         super(name);
@@ -47,10 +48,6 @@ public class AIPlayer extends Player {
 
             default -> Status.UNREACHABLE;
         };
-
-        if (status != Status.SUCCESS) {
-            status.printMessage();
-        }
     }
 
     public void trainOption(Village village) {
@@ -66,10 +63,6 @@ public class AIPlayer extends Player {
 
             default -> Status.UNREACHABLE;
         };
-
-        if (status != Status.SUCCESS) {
-            status.printMessage();
-        }
     }
 
     public void attackEnemyVillage(Village village) {
@@ -80,9 +73,55 @@ public class AIPlayer extends Player {
         int numOfScouts = (int)Math.ceil((village.getStation().sizeOfCategory(Scout.class) - 1)*Math.random() + 1);
 
         Status status = village.attackVillage(villageNum - 1, numOfWizards, numOfBrawlers, numOfScouts);
+    }
 
-        if (status != Status.SUCCESS) {
-            status.printMessage();
+    public void startGame(Village village)  {
+        if (0.4 < Math.random()) {
+            buildOption(village);
+        }
+
+        if (0.6 < Math.random()) {
+            upgradeOption(village);
+        }
+
+        if (!village.getStation().isEmpty() && 0.4 < Math.random()) {
+            trainOption(village);
+        }
+    }
+
+    public void middleGame(Village village) {
+        if (0.7 < Math.random()) {
+            buildOption(village);
+        }
+
+        if (0.5 < Math.random()) {
+            upgradeOption(village);
+        }
+
+        if (!village.getStation().isEmpty() && 0.4 < Math.random()) {
+            trainOption(village);
+        }
+
+        if (!village.getStation().isEmpty() && 0.4 < Math.random()) {
+            attackEnemyVillage(village);
+        }
+    }
+
+    public void endGame(Village village) {
+        if (0.4 < Math.random()) {
+            buildOption(village);
+        }
+
+        if (0.6 < Math.random()) {
+            upgradeOption(village);
+        }
+
+        if (!village.getStation().isEmpty() && 0.4 < Math.random()) {
+            trainOption(village);
+        }
+
+        if (!village.getStation().isEmpty() && 0.3 < Math.random()) {
+            attackEnemyVillage(village);
         }
     }
 
@@ -91,25 +130,22 @@ public class AIPlayer extends Player {
         boolean nextPlayer = false;
 
         while (!nextPlayer) {
-            if (0.4 < Math.random()) {
-                buildOption(village);
-            }
-
-            if (0.6 < Math.random()) {
-                upgradeOption(village);
-            }
-
-            if (!village.getStation().isEmpty() && 0.4 < Math.random()) {
-                trainOption(village);
-            }
-
-            if (!village.getStation().isEmpty() && 0.6 < Math.random()) {
-                attackEnemyVillage(village);
+            if (_tick.lessThan(20)) {
+                startGame(village);
+            } else if (_tick.lessThan(60)) {
+                middleGame(village);
+            } else {
+                endGame(village);
             }
 
             if (0.3 < Math.random()) {
                 nextPlayer = true;
             }
         }
+    }
+
+    @Override
+    public void notify(String text) {
+        return; // stub
     }
 }
