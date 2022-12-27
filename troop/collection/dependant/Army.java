@@ -8,6 +8,7 @@ import village.Village;
 
 // Standard Library
 import java.util.List;
+import java.util.WeakHashMap;
 
 public class Army implements TroopCollection.Interface {
     private final Village _from;
@@ -29,6 +30,10 @@ public class Army implements TroopCollection.Interface {
         _location = new Point(_from.getLocation());
         _movementSpeed = _collection.getSlowestMovementSpeed();
         _carryingCapacity = _collection.getTotalCarryingCapacity();
+    }
+
+    public Village getSender() {
+        return _from;
     }
 
     public <T extends Troop> boolean add(T troop) {

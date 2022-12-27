@@ -122,6 +122,7 @@ public class Village {
                     army.goBack();
                 } else {
                     if (!army.attack().isSuccessful()) {
+                        army.getSender().getPlayer().notify("The below army has been defeated\n" + army);
                         _armies.remove(army);
                     }
                 }

@@ -1,1 +1,1 @@
-javac Main.java
+javac --target 17 Main.java

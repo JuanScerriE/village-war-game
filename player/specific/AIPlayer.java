@@ -29,10 +29,6 @@ public class AIPlayer extends Player {
 
             default -> Status.UNREACHABLE;
         };
-
-        if (status != Status.SUCCESS) {
-            status.printMessage();
-        }
     }
 
     public void upgradeOption(Village village) {
