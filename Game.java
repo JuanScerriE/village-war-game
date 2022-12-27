@@ -145,6 +145,14 @@ public class Game {
         end();
     }
 
+    private void disbandArmiesOfDefeatedVillage(Village village) {
+        for (var army : new LinkedList<>(_map.armiesRef())) {
+            if (army.isFriendly(village)) {
+                _map.armiesRef().remove(army);
+            }
+        }
+    }
+
     private void turnPhase() {
         for (var village : new LinkedList<>(_map.villagesRef())) {
             village
@@ -153,7 +161,7 @@ public class Game {
 
             if (village.isDestroyed()) {
                 village.removeSelfFromEnemies();
-
+                disbandArmiesOfDefeatedVillage(village);
                 _map.villagesRef().remove(village);
             } else {
                 village
