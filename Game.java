@@ -15,6 +15,9 @@ import java.util.Scanner;
 
 public class Game {
     private final Map _map = Map.getInstance();
+
+    // Tick singleton keeps track of the number of elapsed game
+    // loop cycles
     private final Tick _tick = Tick.getInstance();
 
     public void start() {
@@ -93,7 +96,6 @@ public class Game {
             .setArmiesRef(new LinkedList<>());
 
         // Create players and villages
-
         for (int i = 0; i < numOfHumanPlayers; i++) {
             villages.add(new Village(new HumanPlayer("Human " + (i + 1))));
         }
@@ -102,13 +104,16 @@ public class Game {
             villages.add(new Village(new AIPlayer("AI " + (i + 1))));
         }
 
-
         // Prep for location calculations
         boolean locationSuitable;
         Point location;
 
         for (var village : villages) {
             LinkedList<Village> enemyVillages = new LinkedList<>(villages);
+            // Improtantly, the village is not part of the list
+            // of enemy villages. Additionally, a new enemy list
+            // is required for each village since it is
+            // different for each village.
             enemyVillages.remove(village);
 
             // Calculate village location
@@ -145,7 +150,7 @@ public class Game {
         end();
     }
 
-    private void disbandArmiesOfDefeatedVillage(Village village) {
+    private void removeArmiesOfDefeatedVillage(Village village) {
         for (var army : new LinkedList<>(_map.armiesRef())) {
             if (army.isFriendly(village)) {
                 _map.armiesRef().remove(army);
@@ -159,9 +164,11 @@ public class Game {
                 .friendlyTroopArrival()
                 .enemyTroopArrival();
 
+            // Check if village is destroyed. In which case
+            // mark everything related to the village for GC
             if (village.isDestroyed()) {
                 village.removeSelfFromEnemies();
-                disbandArmiesOfDefeatedVillage(village);
+                removeArmiesOfDefeatedVillage(village);
                 _map.villagesRef().remove(village);
             } else {
                 village

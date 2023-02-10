@@ -12,6 +12,13 @@ import java.util.List;
 public class TroopCollection {
     private final CategoryList<Troop> _troops = new CategoryList<>();
 
+    // Many of the methods are helper methods meant to
+    // facilitate normal data structure operations such as
+    // adding, removing and whether it is empty. Additional,
+    // methods related to the CategoryList data structure are
+    // present along with additional methods for calculating
+    // slowest speed, maximum capacity etc.
+
     public <T extends Troop> boolean add(T troop) {
         return _troops.add(troop);
     }
@@ -97,6 +104,13 @@ public class TroopCollection {
     public TroopCollection send(int numOfWizards, int numOfBrawlers, int numOfScouts) {
         if (canSend(numOfWizards, numOfBrawlers, numOfScouts)) {
             TroopCollection collection = new TroopCollection();
+            
+            // Troops of the specified types are moved into a
+            // new collection. So they no longer exist in this
+            // collection. This is mainly used by the Station
+            // dependant which is part of a Village that needs
+            // to send troops but at the same time it weakens
+            // its own defensive power
 
             if (_troops.sizeOfCategory(Wizard.class) > 0) {
                 collection.addList(_troops
@@ -134,7 +148,8 @@ public class TroopCollection {
             double prob = Math.random();
 
             Troop troop = null;
-
+            
+            // This randomly picks an troop of a specific type
             if (prob > .6 && _troops.sizeOfCategory(Wizard.class) > 0) {
                 troop = _troops.getCategory(Wizard.class).getFirst();
             } else if (prob > .3 && _troops.sizeOfCategory(Brawler.class) > 0) {
@@ -143,15 +158,21 @@ public class TroopCollection {
                 troop = _troops.getCategory(Scout.class).getFirst();
             }
 
+            // If a selection was not successful the process
+            // repeats
             if (troop == null) {
                 continue;
             }
 
+            // If the troop cannot sustain that amount of damage
+            // it is removed from the list
             if (attackPower >= troop.getHealth()) {
                 attackPower -= troop.getHealth();
 
                 _troops.remove(troop);
             } else {
+                // Else the troop is damaged and the attack
+                // power left is used up
                 troop.damage(attackPower);
 
                 attackPower = 0;
@@ -171,6 +192,8 @@ public class TroopCollection {
               + "\nSlowest Movement Speed: " + getSlowestMovementSpeed();
     }
 
+    // Use to force implementation for all dependants of
+    // TroopCollection
     public interface Interface {
         <T extends Troop> boolean add(T troop);
         <T extends Troop> boolean addList(List<T> list);

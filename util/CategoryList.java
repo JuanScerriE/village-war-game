@@ -2,6 +2,7 @@ package util;
 
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class CategoryList<T> implements Iterable<T> {
     private final HashMap<Class<? extends T>, LinkedList<? extends T>> _categories = new HashMap<>();
 

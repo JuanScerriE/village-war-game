@@ -1,1 +1,1 @@
-javac --target 17 Main.java
+javac -d bin Main.java

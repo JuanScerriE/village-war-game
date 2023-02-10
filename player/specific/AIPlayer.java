@@ -70,6 +70,11 @@ public class AIPlayer extends Player {
 
         Status status = village.attackVillage(villageNum - 1, numOfWizards, numOfBrawlers, numOfScouts);
     }
+    
+    // startGame, middleGame and endGame are all tweaked with
+    // different values for changing the strategy of the AI
+    // according to the phase of the game. Of course of all this
+    // is arbitrary and can be tweaked with further testing
 
     public void startGame(Village village)  {
         if (0.4 < Math.random()) {
@@ -142,6 +147,11 @@ public class AIPlayer extends Player {
 
     @Override
     public void notify(String text) {
+        return; // stub
+    }
+
+    @Override
+    public void printNotifications() {
         return; // stub
     }
 }

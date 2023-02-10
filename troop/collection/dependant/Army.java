@@ -126,7 +126,11 @@ public class Army implements TroopCollection.Interface {
 
         if (!isEmpty()) {
             _goBack = true;
-
+            
+            // The attack power of the remaining troops is
+            // recalculated and that amount of damage is
+            // inflicted on the village along with stealing of
+            // resources
             _to.damageVillage(getTotalAttackPower());
             _resources.add(_to.getResources().take(_carryingCapacity));
         }
@@ -134,12 +138,18 @@ public class Army implements TroopCollection.Interface {
         return this;
     }
 
+    // Put the resources from the army into the village stash
+    // along with returning all the troops into the village
+    // station
     public Army disband() {
         _from.getResources().move(_resources);
         _from.getStation().receive(_collection);
 
         return this;
     }
+
+    // These are helper functions which are very useful
+    // especially when check if an army is friendly or not
 
     public boolean isFriendly(Village village) {
         return village == _from;

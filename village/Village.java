@@ -30,10 +30,13 @@ public class Village {
     private final Player _player;
     private Point _location = null;
     private List<Village> _enemyVillages = null;
+
     private final List<Army> _armies = Map.getInstance().armiesRef();
     private final CategoryList<TroopBuilding> _troopBuildings = new CategoryList<>();
     private final CategoryList<ResourceBuilding> _resourceBuildings = new CategoryList<>();
     private final Station _troops = new Station();
+
+    // Default starting values
     private final ResourceCollection _resources = new ResourceCollection.Builder()
         .setFood(50)
         .setMana(50)
@@ -91,7 +94,7 @@ public class Village {
 
         for (var army : clonedArmies) {
             if (army.isFriendly(this) && army.arrivedBack()) {
-                _player.notify(army + "\n Has Arrived!");
+                _player.notify(army + "\nHas Arrived Back!");
                 _armies.remove(army.disband());
             }
         }
@@ -118,9 +121,12 @@ public class Village {
 
         for (var army : clonedArmies) {
             if (army.isEnemy(this) && army.arrived()) {
+                // The armies check if the village has already
+                // been destroyed
                 if (isDestroyed()) {
                     army.goBack();
                 } else {
+                    // If not they will attack the village
                     if (!army.attack().isSuccessful()) {
                         army.getSender().getPlayer().notify("The below army has been defeated\n" + army);
                         _armies.remove(army);
@@ -209,6 +215,12 @@ public class Village {
     public Player getPlayer() {
         return _player;
     }
+
+    // The below are all related to actions which can be
+    // performed by the players. Unfortunately, there is not
+    // easy way to write a single method which uses Java
+    // generics to solve the problem. Different implementations
+    // with enumerations are possible for reducing size.
 
     public Status buildAcademy() {
         boolean hasEnough = _resources.hasEnough(Academy.CostToBuild);
@@ -411,7 +423,9 @@ public class Village {
     }
 
     public Village playerActions() {
-        System.out.println(_player.getName());
+        System.out.println("--------------------------------------------\n" + _player.getName() + "\n");
+
+        _player.printNotifications();
 
         _player.actions(this);
 

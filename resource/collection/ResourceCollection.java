@@ -48,6 +48,8 @@ public class ResourceCollection {
     public ResourceCollection take(int amount) {
         ResourceCollection.Builder builder = new Builder();
 
+        // If the total carrying capacity is greater than the
+        // total amount of resources everything is stolen
         if (amount > _mana + _food + _metal) {
             builder.setMana(_mana).setFood(_food).setMetal(_metal);
 
@@ -58,6 +60,9 @@ public class ResourceCollection {
             return builder.build();
         }
 
+        // A random amount of each resource is stolen every time
+        // if the capacity does not allow for all the resources
+        // to be stolen
         int manaAmount = (int)(amount*Math.random()*0.5);
         int foodAmount = (int)(amount*Math.random()*0.5);
         int metalAmount = amount - manaAmount - foodAmount > 0 ? amount - manaAmount - foodAmount : 0;

@@ -27,6 +27,8 @@ public class Point {
         return this;
     }
 
+    // Method used to get the direction of movement by one in
+    // all of the eight possible directions
     public Point directionTo(Point other) {
         int deltaX = other._x - _x;
         int deltaY = other._y - _y;

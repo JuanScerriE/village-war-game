@@ -18,8 +18,11 @@ import player.Player;
 
 // Standard Library
 import java.util.Scanner;
+import java.util.LinkedList;
 
 public class HumanPlayer extends Player {
+
+    private final LinkedList<String> _messageQueue = new LinkedList<>();
 
     public HumanPlayer(String name) {
         super(name);
@@ -315,23 +318,23 @@ public class HumanPlayer extends Player {
     }
     public void printCostsOfBuilding() {
         System.out.println(
-                "\nCost to build Farm: " + Farm.CostToBuild +
-                "\nCost to build Mine: " + Mine.CostToBuild +
-                "\nCost to build Mana Tower: " + ManaTower.CostToBuild +
                 "\nCost to build Academy: " + Academy.CostToBuild +
                 "\nCost to build Arena: " + Arena.CostToBuild +
-                "\nCost to build Foundation: " + Foundation.CostToBuild
+                "\nCost to build Foundation: " + Foundation.CostToBuild +
+                "\nCost to build Farm: " + Farm.CostToBuild +
+                "\nCost to build Mine: " + Mine.CostToBuild +
+                "\nCost to build Mana Tower: " + ManaTower.CostToBuild + "\n"
         );
     }
 
     public void printCostsOfUpgrades() {
         System.out.println(
-                "\nCost to upgrade Farm: " + Farm.CostToUpgrade +
-                "\nCost to upgrade Mine: " + Mine.CostToUpgrade +
-                "\nCost to upgrade Mana Tower: " + ManaTower.CostToUpgrade +
                 "\nCost to upgrade Academy: " + Academy.CostToUpgrade +
                 "\nCost to upgrade Arena: " + Arena.CostToUpgrade +
-                "\nCost to upgrade Foundation: " + Foundation.CostToUpgrade
+                "\nCost to upgrade Foundation: " + Foundation.CostToUpgrade +
+                "\nCost to upgrade Farm: " + Farm.CostToUpgrade +
+                "\nCost to upgrade Mine: " + Mine.CostToUpgrade +
+                "\nCost to upgrade Mana Tower: " + ManaTower.CostToUpgrade + "\n"
         );
     }
 
@@ -339,7 +342,7 @@ public class HumanPlayer extends Player {
         System.out.println(
                 "\nCost to train Wizard: " + Academy.CostToTrainTroop +
                 "\nCost to train Brawler: " + Arena.CostToTrainTroop +
-                "\nCost to train Scout: " + Foundation.CostToTrainTroop
+                "\nCost to train Scout: " + Foundation.CostToTrainTroop + "\n"
         );
     }
     public void printCosts() {
@@ -411,6 +414,23 @@ public class HumanPlayer extends Player {
 
     @Override
     public void notify(String text) {
-        System.out.println(text);
+       _messageQueue.offer(text);
+    }
+
+    @Override
+    public void printNotifications() {
+        boolean printBuffer = false;
+
+        if (!_messageQueue.isEmpty()) {
+            printBuffer = true;
+        }
+
+        while (!_messageQueue.isEmpty()) {
+            System.out.println(_messageQueue.remove());
+        }
+
+        if (printBuffer) {
+            System.out.println();
+        }
     }
 }

@@ -12,4 +12,5 @@ public abstract class Player {
     }
     public abstract void actions(Village village);
     public abstract void notify(String text);
+    public abstract void printNotifications();
 }

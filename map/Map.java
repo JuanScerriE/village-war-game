@@ -6,6 +6,9 @@ import village.Village;
 // Standard Library
 import java.util.List;
 
+
+// Singleton Object which keeps track of the dimensions of the
+// map and all the Villages and Armies present
 public class Map {
     private static Map _instance = null;
     private Dimensions _dimensions = null;
